@@ -1,0 +1,44 @@
+/*--------------------------------------------------
+    [TRANSITION]
+----------------------------------------------------*/
+/* Cubic Bezier Transition */
+/***
+Invoice page
+***/
+.invoice table {
+  margin: 30px 0 30px 0;
+}
+
+.invoice .invoice-logo {
+  margin-bottom: 20px;
+}
+
+.invoice .invoice-logo p {
+  padding: 25px 5px 0 10px;
+  font-size: 50px;
+  line-height: 15px;
+  text-align: right;
+}
+
+.invoice .invoice-logo p span {
+  display: block;
+  font-size: 14px;
+  padding-top: 20px;
+}
+
+.invoice .invoice-logo-space {
+  margin-bottom: 15px;
+}
+
+.invoice .invoice-payment strong {
+  margin-right: 5px;
+}
+
+.invoice .invoice-block {
+  text-align: right;
+}
+
+.invoice .invoice-block .amounts {
+  margin-top: 20px;
+  font-size: 14px;
+}
