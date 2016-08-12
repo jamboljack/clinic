@@ -298,19 +298,19 @@ function HitungSubTotalItem(){
                 </div>
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Satuan</label>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="text" class="form-control item_satuan" name="satuan" onkeydown="HitungSubTotalItem()" autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Harga</label>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="text" class="form-control item_harga" name="harga" id="item_harga" onkeydown="HitungSubTotalItem()" autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Sub Total</label>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="text" class="form-control item_subtotal" name="subtotal" id="item_subtotal" autocomplete="off" readonly>
                     </div>
                 </div>
