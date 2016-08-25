@@ -1,8 +1,8 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>js/sweetalert2.css">
 <script src="<?php echo base_url(); ?>js/sweetalert2.min.js"></script>
 <script>
-    function hapusData(pembelian_id) {
-        var id = pembelian_id;
+    function hapusData(retur_id) {
+        var id = retur_id;
         swal({
             title: 'Anda Yakin ?',
             text: 'Data ini Akan di Hapus !',type: 'warning',
@@ -13,7 +13,7 @@
             cancelButtonText: 'No',
             closeOnConfirm: true
         }, function() {
-            window.location.href="<?php echo site_url('apotek/pembelian/deletedata'); ?>"+"/"+id
+            window.location.href="<?php echo site_url('apotek/retur_beli/deletedata'); ?>"+"/"+id
         });
     }
 </script>
@@ -34,7 +34,7 @@ if ($this->session->flashdata('notification')) { ?>
 <div class="page-content-wrapper">
     <div class="page-content">            
         <h3 class="page-title">
-            Transaksi <small>Pembelian</small>
+            Transaksi <small>Retur Beli</small>
         </h3>
         <div class="page-bar">
             <ul class="page-breadcrumb">                    
@@ -48,21 +48,21 @@ if ($this->session->flashdata('notification')) { ?>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Pembelian</a>
+                    <a href="#">Retur Beli</a>
                 </li>
             </ul>                
         </div>            
                         
         <div class="row">
             <div class="col-md-12">
-                <a href="<?php echo site_url('apotek/pembelian/adddata'); ?>">
+                <a href="<?php echo site_url('apotek/retur_beli/adddata'); ?>">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square"></i> Tambah</button>
                 </a>
                 <br><br>
                 <div class="portlet box red-intense">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-list"></i> Daftar Pembelian
+                            <i class="fa fa-list"></i> Daftar Retur Beli
                         </div>
                         <div class="tools"></div>
                     </div>
@@ -88,9 +88,9 @@ if ($this->session->flashdata('notification')) { ?>
                             <?php 
                             $no = 1;
                             foreach($daftarlist as $r) {
-                                $pembelian_id   = $r->pembelian_id;
+                                $retur_id   = $r->retur_id;
                                 
-                                $tanggal        = $r->pembelian_date_in;
+                                $tanggal        = $r->retur_date;
                                 if (!empty($tanggal)) {
                                     $xtanggal   = explode("-",$tanggal);
                                     $thn        = $xtanggal[0];
@@ -104,15 +104,15 @@ if ($this->session->flashdata('notification')) { ?>
                             ?>
                             <tr>
                                 <td><?php echo $no; ?></td>                                
-                                <td><?php echo $r->pembelian_no_invoice; ?></td>
+                                <td><?php echo $r->retur_no_invoice; ?></td>
                                 <td><?php echo $date; ?></td>
                                 <td><?php echo $r->suplier_name; ?></td>
-                                <td><?php echo number_format($r->pembelian_ppn, 2, '.', ','); ?></td>
-                                <td><?php echo number_format($r->pembelian_netto, 0, '.', ','); ?></td>
-                                <td><?php echo $r->pembelian_pay_type; ?></td>
+                                <td><?php echo number_format($r->retur_ppn, 2, '.', ','); ?></td>
+                                <td><?php echo number_format($r->retur_netto, 0, '.', ','); ?></td>
+                                <td><?php echo $r->retur_pay_type; ?></td>
                                 <td>
                                     <?php 
-                                    if($r->pembelian_status == 0) { 
+                                    if($r->retur_status == 0) { 
                                         echo '<span class="label label-sm label-danger">Belum Final</span>'; 
                                     } else { 
                                         echo '<span class="label label-sm label-success">Final</span>'; 
@@ -121,7 +121,7 @@ if ($this->session->flashdata('notification')) { ?>
                                 </td>
                                 <td><?php echo $r->user_username; ?></td>
                                 <td>
-                                    <a href="<?php echo site_url('apotek/pembelian/editdata/'.$r->pembelian_id); ?>"><button class="btn btn-primary btn-xs" title="Edit Data"><i class="icon-pencil"></i> Edit</button></a>                                    
+                                    <a href="<?php echo site_url('apotek/retur_beli/editdata/'.$r->retur_id); ?>"><button class="btn btn-primary btn-xs" title="Edit Data"><i class="icon-pencil"></i> Edit</button></a>                                    
                                 </td>
                             </tr>
                             <?php

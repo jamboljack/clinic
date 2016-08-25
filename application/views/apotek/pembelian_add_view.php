@@ -89,9 +89,7 @@ function checktxtbox(){
     }
 
     var myForm      = document.form1;
-    var Qty         = myForm.qty.value;
-    Qty             = Qty.replace(/[,]/g, ''); // Ini String
-    Qty             = parseInt(Qty); // Ini Integer
+    var Qty         = parseFloat(myForm.qty.value);
     var Harga       = myForm.harga.value;
     Harga           = Harga.replace(/[,]/g, ''); // Ini String
     Harga           = parseInt(Harga); // Ini Integer
@@ -148,8 +146,7 @@ function checktxtbox(){
             $(".item_expired").val(expired);
             $(".item_stok").val(stok);
             $(".item_isi").val(isi);
-            $(".item_satuankecil").val(satuankecil);
-            console.log(stok, isi, satuankecil);
+            $(".item_satuankecil").val(satuankecil);            
         })
     });
 </script>
@@ -157,9 +154,7 @@ function checktxtbox(){
 <script type="text/javascript">
 function HitungSubTotalItem(){
     var myForm2     = document.form2;
-    var Qty         = myForm2.item_qty.value;
-    Qty             = Qty.replace(/[,]/g, ''); // Ini String
-    Qty             = parseInt(Qty); // Ini Integer
+    var Qty         = parseFloat(myForm2.item_qty.value);
     var Harga       = myForm2.item_harga.value;
     Harga           = Harga.replace(/[,]/g, ''); // Ini String
     Harga           = parseInt(Harga); // Ini Integer
@@ -188,7 +183,7 @@ function HitungTotalNetto() {
     var TotalBruto  = myForm3.total_bruto.value;
     TotalBruto      = TotalBruto.replace(/[,]/g, ''); // Ini String
     TotalBruto      = parseInt(TotalBruto); // Ini Integer    
-    var PPN         = parseFloat(myForm3.ppn.value);    
+    var PPN         = parseFloat(myForm3.ppn.value);
     
     if (PPN === 0.00) {
         myForm3.ppn.value   = 0;
@@ -197,11 +192,9 @@ function HitungTotalNetto() {
         var TotalPPN        = ((PPN*TotalBruto)/100); // PPN dari Total Bruto    
     }
     
-    if (PPN === 0) {
-        console.log('Bruto');
+    if (PPN === 0) {        
         myForm3.total_netto.value = TotalBruto;    
-    } else {
-        console.log('Bruto + PPN');
+    } else {        
         var TotalNetto = (TotalBruto+TotalPPN); // Bruto + PPN + Materai
         myForm3.total_netto.value = TotalNetto;        
     }

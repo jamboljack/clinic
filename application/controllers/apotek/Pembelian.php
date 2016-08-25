@@ -127,6 +127,7 @@ class Pembelian extends CI_Controller {
 			);
 
 			$this->db->where('obat_code', $CodeObat);
+			$this->db->where('pembelian_id', $id);
 			$this->db->update('clinic_pembelian_detail', $data);			
 		} else { // Jika belum, Insert Data Item Baru			
 			$data = array(
@@ -236,6 +237,7 @@ class Pembelian extends CI_Controller {
 			);
 
 			$this->db->where('obat_code', $CodeObat);
+			$this->db->where('pembelian_id', $ID_Pembelian);
 			$this->db->update('clinic_pembelian_detail', $data);		
 		} else {			
 			$data = array(
@@ -333,7 +335,7 @@ class Pembelian extends CI_Controller {
 		$kode = $this->security->xss_clean($this->uri->segment(5));
 		
 		if ($kode == null) {
-			redirect(site_url('apotek/pembelian/adddata/'.$this->uri->segment(4)));
+			redirect(site_url('apotek/pembelian/editdata/'.$this->uri->segment(4)));
 		} else {
 			$this->pembelian_model->delete_data_item($kode);
 			$this->session->set_flashdata('notification','Hapus Item Sukses.');

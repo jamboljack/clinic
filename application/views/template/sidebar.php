@@ -11,6 +11,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -26,6 +28,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'pendidikan') {
     $dashboard      = '';
@@ -37,6 +40,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -52,6 +57,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'pekerjaan') {
     $dashboard      = '';
@@ -63,6 +69,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -78,6 +86,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'status') {
     $dashboard      = '';
@@ -89,6 +98,8 @@ if ($uri == 'home') {
     $status         = 'active';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -104,6 +115,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'darah') {
     $dashboard      = '';
@@ -115,6 +127,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = 'active';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -130,6 +144,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'agama') {
     $dashboard      = '';
@@ -141,6 +156,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = 'active';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -156,6 +173,65 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
+    $users          = '';
+} elseif ($uri == 'asuransi') {
+    $dashboard      = '';
+    $umum           = 'active open';
+    $span_umum_1    = '<span class="selected"></span>';
+    $span_umum_2    = 'open';
+    $pendidikan     = '';
+    $pekerjaan      = '';
+    $status         = '';
+    $darah          = '';
+    $agama          = '';
+    $asuransi       = 'active';
+    $identitas      = '';
+    $tarif          = '';
+    $span_tarif_1   = '';
+    $span_tarif_2   = '';
+    $jenistarif     = '';
+    $kelompok       = '';
+    $pelanggan      = '';
+    $kelompok_unit  = '';
+    $unit           = '';
+    $produk         = '';
+    $klinik         = '';
+    $span_klinik_1  = '';
+    $span_klinik_2  = '';
+    $tipe_dokter    = '';
+    $dokter         = '';
+    $perawat        = '';
+    $poliklinik     = '';
+    $users          = '';
+} elseif ($uri == 'identitas') {
+    $dashboard      = '';
+    $umum           = 'active open';
+    $span_umum_1    = '<span class="selected"></span>';
+    $span_umum_2    = 'open';
+    $pendidikan     = '';
+    $pekerjaan      = '';
+    $status         = '';
+    $darah          = '';
+    $agama          = '';
+    $asuransi       = '';
+    $identitas      = 'active';
+    $tarif          = '';
+    $span_tarif_1   = '';
+    $span_tarif_2   = '';
+    $jenistarif     = '';
+    $kelompok       = '';
+    $pelanggan      = '';
+    $kelompok_unit  = '';
+    $unit           = '';
+    $produk         = '';
+    $klinik         = '';
+    $span_klinik_1  = '';
+    $span_klinik_2  = '';
+    $tipe_dokter    = '';
+    $dokter         = '';
+    $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'jenistarif') {
     $dashboard      = '';
@@ -167,6 +243,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -182,6 +260,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'kelompok') {
     $dashboard      = '';
@@ -193,6 +272,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -208,6 +289,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'pelanggan') {
     $dashboard      = '';
@@ -219,6 +301,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -234,6 +318,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'kelompok_unit') {
     $dashboard      = '';
@@ -245,6 +330,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -260,6 +347,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'unit') {
     $dashboard      = '';
@@ -271,6 +359,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -286,6 +376,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'produk') {
     $dashboard      = '';
@@ -297,6 +388,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = 'active open';
     $span_tarif_1   = '<span class="selected"></span>';
     $span_tarif_2   = 'open';
@@ -312,6 +405,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'tipe_dokter') {
     $dashboard      = '';
@@ -323,6 +417,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -338,6 +434,7 @@ if ($uri == 'home') {
     $tipe_dokter    = 'active';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'dokter') {
     $dashboard      = '';
@@ -349,6 +446,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -364,6 +463,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = 'active';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';
 } elseif ($uri == 'perawat') {
     $dashboard      = '';
@@ -375,6 +475,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -390,6 +492,36 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = 'active';
+    $poliklinik     = '';
+    $users          = '';
+} elseif ($uri == 'poliklinik') {
+    $dashboard      = '';
+    $umum           = '';
+    $span_umum_1    = '';
+    $span_umum_2    = '';
+    $pendidikan     = '';
+    $pekerjaan      = '';
+    $status         = '';
+    $darah          = '';
+    $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
+    $tarif          = '';
+    $span_tarif_1   = '';
+    $span_tarif_2   = '';
+    $jenistarif     = '';
+    $kelompok       = '';
+    $pelanggan      = '';
+    $kelompok_unit  = '';
+    $unit           = '';
+    $produk         = '';
+    $klinik         = 'active open';
+    $span_klinik_1  = '<span class="selected"></span>';
+    $span_klinik_2  = 'open';
+    $tipe_dokter    = '';
+    $dokter         = '';
+    $perawat        = '';
+    $poliklinik     = 'active';
     $users          = '';
 } elseif ($uri == 'users') {
     $dashboard      = '';
@@ -401,6 +533,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -416,6 +550,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = 'active';
 } else {
     $dashboard      = 'active';
@@ -427,6 +562,8 @@ if ($uri == 'home') {
     $status         = '';
     $darah          = '';
     $agama          = '';
+    $asuransi       = '';
+    $identitas      = '';
     $tarif          = '';
     $span_tarif_1   = '';
     $span_tarif_2   = '';
@@ -442,6 +579,7 @@ if ($uri == 'home') {
     $tipe_dokter    = '';
     $dokter         = '';
     $perawat        = '';
+    $poliklinik     = '';
     $users          = '';  
 }
 
@@ -520,6 +658,18 @@ if ($uri == 'home') {
                             Agama
                         </a>
                     </li>
+                    <li class="<?php echo $asuransi; ?>">
+                        <a href="<?php echo site_url('admin/asuransi'); ?>">
+                            <i class="fa fa-check-square-o"></i>
+                            Asuransi
+                        </a>
+                    </li>
+                    <li class="<?php echo $identitas; ?>">
+                        <a href="<?php echo site_url('admin/identitas'); ?>">
+                            <i class="fa fa-check-square-o"></i>
+                            Identitas
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="<?php echo $tarif; ?>">
@@ -592,6 +742,12 @@ if ($uri == 'home') {
                         <a href="<?php echo site_url('admin/perawat'); ?>">
                             <i class="fa fa-check-square-o"></i>
                             Perawat
+                        </a>
+                    </li>
+                    <li class="<?php echo $poliklinik; ?>">
+                        <a href="<?php echo site_url('admin/poliklinik'); ?>">
+                            <i class="fa fa-check-square-o"></i>
+                            Poliklinik
                         </a>
                     </li>
                 </ul>

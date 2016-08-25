@@ -177,7 +177,8 @@ class Pembelian_model extends CI_Model {
 		$TotalPB	= $Total->total; // Total PO
 
 		$data = array(
-			'pembelian_netto'			=> $TotalPB,		   		
+			'pembelian_bruto'			=> $TotalPB,
+			'pembelian_netto'			=> $TotalPB,
 		   	'pembelian_date_update' 	=> date('Y-m-d'),
 		   	'pembelian_time_update' 	=> date('Y-m-d H:i:s'),
 		   	'user_username' 			=> trim($this->session->userdata('username'))		   		
@@ -289,6 +290,7 @@ class Pembelian_model extends CI_Model {
 		$TotalPB		= $Total->total; // Total PO
 
 		$data = array(
+			'pembelian_bruto'			=> $TotalPB,
 			'pembelian_netto'			=> $TotalPB,		   		
 		   	'pembelian_date_update' 	=> date('Y-m-d'),
 		   	'pembelian_time_update' 	=> date('Y-m-d H:i:s'),

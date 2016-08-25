@@ -1,29 +1,10 @@
-<script src="<?php echo base_url(); ?>js/jquery.maskMoney.min.js"></script>
-<script language="JavaScript" type="text/JavaScript">
-$(document).ready(function() {    
-    $('#js_tempat').maskMoney({thousands:',', precision:0});
-    $('#js_dokter').maskMoney({thousands:',', precision:0});
-    $('#js_perawat').maskMoney({thousands:',', precision:0});
-    $('#js_lain').maskMoney({thousands:',', precision:0});
-    $('#harga').maskMoney({thousands:',', precision:0});
-});
-</script>
-
 <script language="JavaScript" type="text/JavaScript">
 function hitung() {
     var myForm  = document.form1;
-    var Tempat  = myForm.js_tempat.value;
-    Tempat      = Tempat.replace(/[,]/g, ''); // Ini String
-    Tempat      = parseInt(Tempat); // Ini Integer
-    var Dokter  = myForm.js_dokter.value;
-    Dokter      = Dokter.replace(/[,]/g, ''); // Ini String
-    Dokter      = parseInt(Dokter); // Ini Integer
-    var Perawat = myForm.js_perawat.value;
-    Perawat     = Perawat.replace(/[,]/g, ''); // Ini String
-    Perawat     = parseInt(Perawat); // Ini Integer
-    var Lain    = myForm.js_lain.value;
-    Lain        = Lain.replace(/[,]/g, ''); // Ini String
-    Lain        = parseInt(Lain); // Ini Integer
+    var Tempat  = parseInt(myForm.js_tempat.value);    
+    var Dokter  = parseInt(myForm.js_dokter.value);    
+    var Perawat = parseInt(myForm.js_perawat.value);    
+    var Lain    = parseInt(myForm.js_lain.value);    
 
     var Total  = (Tempat+Dokter+Perawat+Lain);
     if (Total > 0) {
@@ -111,28 +92,28 @@ function hitung() {
                                 <div class="form-group form-md-line-input">
                                     <label class="col-md-2 control-label" for="form_control_1">Jasa Tempat</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" name="js_tempat" id="js_tempat" value="<?php echo set_value('js_tempat', 0); ?>" onkeyup="hitung()" autocomplete="off">
+                                        <input type="number" class="form-control" name="js_tempat" id="js_tempat" value="<?php echo set_value('js_tempat', 0); ?>" onkeyup="hitung()" autocomplete="off">
                                         <div class="form-control-focus"></div>
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
                                     <label class="col-md-2 control-label" for="form_control_1">Jasa Dokter</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" name="js_dokter" id="js_dokter" value="<?php echo set_value('js_dokter', 0); ?>" onkeyup="hitung()" autocomplete="off">
+                                        <input type="number" class="form-control" name="js_dokter" id="js_dokter" value="<?php echo set_value('js_dokter', 0); ?>" onkeyup="hitung()" autocomplete="off">
                                         <div class="form-control-focus"></div>
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
                                     <label class="col-md-2 control-label" for="form_control_1">Jasa Perawat</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" name="js_perawat" id="js_perawat" value="<?php echo set_value('js_perawat', 0); ?>" onkeyup="hitung()" autocomplete="off">
+                                        <input type="number" class="form-control" name="js_perawat" id="js_perawat" value="<?php echo set_value('js_perawat', 0); ?>" onkeyup="hitung()" autocomplete="off">
                                         <div class="form-control-focus"></div>
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
                                     <label class="col-md-2 control-label" for="form_control_1">Jasa Lain-Lain</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" name="js_lain" id="js_lain" value="<?php echo set_value('js_lain', 0); ?>" onkeyup="hitung()" autocomplete="off">
+                                        <input type="number" class="form-control" name="js_lain" id="js_lain" value="<?php echo set_value('js_lain', 0); ?>" onkeyup="hitung()" autocomplete="off">
                                         <div class="form-control-focus"></div>
                                     </div>
                                 </div>

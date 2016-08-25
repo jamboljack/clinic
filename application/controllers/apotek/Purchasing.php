@@ -24,6 +24,7 @@ class Purchasing extends CI_Controller {
 	public function adddata() {		
 		$data['listSuplier'] 	= $this->purchasing_model->select_suplier()->result();		
 		$data['listObat'] 		= $this->purchasing_model->select_obat()->result();		
+		
 		$ID_Purchase			= $this->uri->segment(4);
 		if (empty($ID_Purchase) || $ID_Purchase == '') {
 			$data['KodePO'] 	= $this->purchasing_model->getkodeunik();
@@ -77,6 +78,7 @@ class Purchasing extends CI_Controller {
 			);
 
 			$this->db->where('obat_code', $CodeObat);
+			$this->db->where('purchase_id', $id);
 			$this->db->update('clinic_purchase_detail', $data);			
 		} else {			
 			// Konversi String ke Integer
@@ -135,6 +137,7 @@ class Purchasing extends CI_Controller {
 			);
 
 			$this->db->where('obat_code', $CodeObat);
+			$this->db->where('purchase_id', $ID_Purchase);
 			$this->db->update('clinic_purchase_detail', $data);			
 		} else {			
 			// Konversi String ke Integer

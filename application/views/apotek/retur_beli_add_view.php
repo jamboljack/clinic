@@ -14,7 +14,7 @@
             cancelButtonText: 'No',
             closeOnConfirm: true
         }, function() {
-            window.location.href="<?php echo site_url('apotek/pembelian/deletedataitem/'.$this->uri->segment(4)); ?>"+"/"+id
+            window.location.href="<?php echo site_url('apotek/retur_beli/deletedataitem/'.$this->uri->segment(4)); ?>"+"/"+id
         });
     }
 </script>
@@ -89,9 +89,8 @@ function checktxtbox(){
     }
 
     var myForm      = document.form1;
-    var Qty         = myForm.qty.value;
-    Qty             = Qty.replace(/[,]/g, ''); // Ini String
-    Qty             = parseInt(Qty); // Ini Integer
+    var Qty         = parseFloat(myForm.qty.value);
+    //Qty             = parseInt(Qty); // Ini Integer
     var Harga       = myForm.harga.value;
     Harga           = Harga.replace(/[,]/g, ''); // Ini String
     Harga           = parseInt(Harga); // Ini Integer
@@ -131,9 +130,7 @@ function checktxtbox(){
             var satuan      = $(this).data('satuan');
             var harga       = $(this).data('harga');
             var disc        = $(this).data('disc');
-            var subtotal    = $(this).data('subtotal');
-            var expire      = $(this).data('expired');
-            var expired     = expire.split("-").reverse().join("-");
+            var subtotal    = $(this).data('subtotal');            
             var stok        = $(this).data('stok');
             var isi         = $(this).data('isikecil');
             var satuankecil = $(this).data('satuankecil');
@@ -144,12 +141,10 @@ function checktxtbox(){
             $(".item_satuan").val(satuan);
             $(".item_harga").val(harga);
             $(".item_disc").val(disc);
-            $(".item_subtotal").val(subtotal);
-            $(".item_expired").val(expired);
+            $(".item_subtotal").val(subtotal);            
             $(".item_stok").val(stok);
             $(".item_isi").val(isi);
-            $(".item_satuankecil").val(satuankecil);
-            console.log(stok, isi, satuankecil);
+            $(".item_satuankecil").val(satuankecil);            
         })
     });
 </script>
@@ -157,9 +152,7 @@ function checktxtbox(){
 <script type="text/javascript">
 function HitungSubTotalItem(){
     var myForm2     = document.form2;
-    var Qty         = myForm2.item_qty.value;
-    Qty             = Qty.replace(/[,]/g, ''); // Ini String
-    Qty             = parseInt(Qty); // Ini Integer
+    var Qty         = parseFloat(myForm2.item_qty.value);
     var Harga       = myForm2.item_harga.value;
     Harga           = Harga.replace(/[,]/g, ''); // Ini String
     Harga           = parseInt(Harga); // Ini Integer
@@ -197,11 +190,9 @@ function HitungTotalNetto() {
         var TotalPPN        = ((PPN*TotalBruto)/100); // PPN dari Total Bruto    
     }
     
-    if (PPN === 0) {
-        console.log('Bruto');
+    if (PPN === 0) {        
         myForm3.total_netto.value = TotalBruto;    
-    } else {
-        console.log('Bruto + PPN');
+    } else {        
         var TotalNetto = (TotalBruto+TotalPPN); // Bruto + PPN + Materai
         myForm3.total_netto.value = TotalNetto;        
     }
@@ -322,7 +313,7 @@ function HitungTotalNetto() {
 <div class="modal bs-modal-lg" id="edititem" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="<?php echo site_url('apotek/pembelian/updatedataitem/'.$this->uri->segment(4)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form2">
+            <form action="<?php echo site_url('apotek/retur_beli/updatedataitem/'.$this->uri->segment(4)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form2">
             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
             <input type="hidden" class="form-control detail_id" name="id">
             <input type="hidden" class="form-control item_code" name="code">
@@ -347,14 +338,7 @@ function HitungTotalNetto() {
                     <div class="col-md-9">
                         <input type="text" class="form-control item_name" name="name" autocomplete="off" readonly>
                     </div>
-                </div>
-                <div class="form-group form-md-line-input">
-                    <label class="col-md-3 control-label">Tgl. Expired</label>
-                    <div class="col-md-4">
-                        <input class="form-control form-control-inline input-medium date-picker item_expired" size="16" type="text" name="tgl_expired" placeholder="DD-MM-YYYY" autocomplete="off" required />
-                        <div class="form-control-focus"></div>
-                    </div>
-                </div>
+                </div>            
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Qty</label>
                     <div class="col-md-2">
@@ -403,21 +387,21 @@ function HitungTotalNetto() {
 <div class="modal fade" id="bayar" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-full">
         <div class="modal-content">
-            <form action="<?php echo site_url('apotek/pembelian/updatedata/'.$this->uri->segment(4)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
+            <form action="<?php echo site_url('apotek/retur_beli/updatedata/'.$this->uri->segment(4)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Simpan Faktur Pembelian</h4>
+                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Simpan Faktur Retur Beli</h4>
                 </div>
                 
                 <div class="modal-body">
                     <div class="row">                
                         <div class="col-md-6">
                             <div class="form-group form-md-line-input">
-                                <label class="col-md-4 control-label" for="form_control_1">No. LPB</label>
+                                <label class="col-md-4 control-label" for="form_control_1">No. RPB</label>
                                 <div class="col-md-8">                                                
-                                    <input type="text" class="form-control" name="no_lpb" value="<?php echo $KodePB; ?>" autocomplete="off" readonly>
+                                    <input type="text" class="form-control" name="no_rpb" value="<?php echo $KodeRB; ?>" autocomplete="off" readonly>
                                     <div class="form-control-focus"></div>
                                 </div>
                             </div>
@@ -573,7 +557,7 @@ function HitungTotalNetto() {
 <div class="page-content-wrapper">
     <div class="page-content">            
         <h3 class="page-title">
-            Transaksi <small>Pembelian</small>
+            Transaksi <small>Retur Beli</small>
         </h3>
         <div class="page-bar">
             <ul class="page-breadcrumb">                    
@@ -587,11 +571,11 @@ function HitungTotalNetto() {
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="<?php echo site_url('apotek/pembelian'); ?>">Pembelian</a>
+                    <a href="<?php echo site_url('apotek/retur_beli'); ?>">Retur Beli</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Tambah Faktur Pembelian</a>
+                    <a href="#">Tambah Faktur Retur Beli</a>
                 </li>
             </ul>                
         </div>            
@@ -602,7 +586,7 @@ function HitungTotalNetto() {
                 <div class="portlet box red-intense">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-plus-square"></i> Form Tambah Faktur Pembelian
+                            <i class="fa fa-plus-square"></i> Form Tambah Faktur Retur Beli
                         </div>
                         <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
@@ -618,7 +602,7 @@ function HitungTotalNetto() {
                                 <div class="col-xs-6">
                                 <p>                                
                                 <b><?php echo number_format($Total, 0, '.', ','); ?></b>
-                                <span class="muted">No. LPB : <b><?php echo $KodePB; ?> / <?php echo date('d-m-Y'); ?></b></span>
+                                <span class="muted">No. RPB : <b><?php echo $KodeRB; ?> / <?php echo date('d-m-Y'); ?></b></span>
                                 </p>
                                 </div>
                             </div>
@@ -629,9 +613,9 @@ function HitungTotalNetto() {
 
                 <div class="portlet light bordered">
                     <div class="portlet-body form">
-                        <form role="form" action="<?php echo site_url('apotek/pembelian/savedataitem/'.$this->uri->segment(4)); ?>" method="post" enctype="multipart/form-data" name="form1">
+                        <form role="form" action="<?php echo site_url('apotek/retur_beli/savedataitem/'.$this->uri->segment(4)); ?>" method="post" enctype="multipart/form-data" name="form1">
                         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-                        <input type="hidden" name="no_purchase" value="<?php echo $KodePB; ?>">
+                        <input type="hidden" name="no_purchase" value="<?php echo $KodeRB; ?>">
                         <input type="hidden" name="total" value="<?php echo $Total; ?>">
                         <input type="hidden" class="obat_satuankecil" name="satuankecil">
                         <input type="hidden" class="obat_isikecil" name="isikecil">
@@ -714,23 +698,13 @@ function HitungTotalNetto() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">                                    
-                                    <div class="col-md-3">
-                                        <div class="form-group form-md-line-input"> 
-                                            <div class="input-group-control">
-                                                <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" name="tgl_expired" value="<?php echo set_value('tgl_expired'); ?>" placeholder="DD-MM-YYYY" autocomplete="off" />
-                                                <label for="form_control_1">Tgl. Expired Obat</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
+                                </div>                                
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit" class="btn green submit" id="SaveItem"><i class="fa fa-plus-circle"></i> Tambah Item</button>
                                         <button type="button" class="btn blue simpan" data-toggle="modal" data-target="#bayar" title="Simpan Data"><i class="fa fa-floppy-o"></i> Simpan
                                         </button>                                        
-                                        <a href="<?php echo site_url('apotek/pembelian'); ?>" class="btn yellow"><i class="fa fa-times"></i> Batal</a>                                        
+                                        <a href="<?php echo site_url('apotek/retur_beli'); ?>" class="btn yellow"><i class="fa fa-times"></i> Batal</a>                                        
                                     </div>
                                 </div>                            
                             </div>
@@ -754,13 +728,11 @@ function HitungTotalNetto() {
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="10%">Kode</th>
-                                                <th>Nama Obat</th>
-                                                <th width="10%">Expired</th>
+                                                <th>Nama Obat</th>                                                
                                                 <th width="5%">Qty</th>
                                                 <th width="8%">Satuan</th>
                                                 <th width="10%">Harga</th>
-                                                <th width="5%
-                                                ">Disc(%)</th>
+                                                <th width="5%">Disc(%)</th>
                                                 <th width="10%">Sub Total</th>
                                                 <th width="10%">Action</th>
                                             </tr>
@@ -770,31 +742,18 @@ function HitungTotalNetto() {
                                             $no = 1;
                                             foreach($listItem as $i) {
                                                 $detail_id = $i->detail_id;
-
-                                                $tanggal_ex     = $i->detail_date_expired;
-                                                if (!empty($tanggal_ex)) {
-                                                    $xtanggal   = explode("-",$tanggal_ex);
-                                                    $thn        = $xtanggal[0];
-                                                    $bln        = $xtanggal[1];
-                                                    $tgl        = $xtanggal[2];
-
-                                                    $date_ex    = $tgl.'-'.$bln.'-'.$thn;
-                                                } else { 
-                                                    $date_ex    = '';
-                                                }
                                             ?>
                                             <tr>
                                                 <td><?php echo $no; ?></td>
                                                 <td><?php echo $i->obat_code; ?></td>               
-                                                <td><?php echo $i->detail_name; ?></td>
-                                                <td><?php echo $date_ex; ?></td>
+                                                <td><?php echo $i->detail_name; ?></td>             
                                                 <td><?php echo $i->detail_qty; ?></td>
                                                 <td><?php echo $i->detail_satuan; ?></td>      
                                                 <td align="right"><?php echo number_format($i->detail_harga, 0, '.', ','); ?></td>
                                                 <td align="right"><?php echo number_format($i->detail_disc, 2, '.', ','); ?></td>
                                                 <td align="right"><?php echo number_format($i->detail_total, 0, '.', ','); ?></td>
                                                 <td align="center">
-                                                    <button type="button" class="btn btn-primary btn-xs edit_item" data-toggle="modal" data-target="#edititem" data-id="<?php echo $i->detail_id; ?>" data-code="<?php echo $i->obat_code; ?>" data-name="<?php echo $i->detail_name; ?>" data-qty="<?php echo $i->detail_qty; ?>" data-satuan="<?php echo $i->detail_satuan; ?>" data-harga="<?php echo number_format($i->detail_harga, 0, '.', ','); ?>" data-disc="<?php echo $i->detail_disc; ?>" data-subtotal="<?php echo number_format($i->detail_total, 0, '.', ','); ?>" data-expired="<?php echo $i->detail_date_expired; ?>" data-stok="<?php echo $i->obat_stok; ?>" data-isikecil="<?php echo $i->detail_isi_kcl; ?>" data-satuankecil="<?php echo $i->detail_sat_kcl; ?>" title="Edit Data"><i class="icon-pencil"></i>
+                                                    <button type="button" class="btn btn-primary btn-xs edit_item" data-toggle="modal" data-target="#edititem" data-id="<?php echo $i->detail_id; ?>" data-code="<?php echo $i->obat_code; ?>" data-name="<?php echo $i->detail_name; ?>" data-qty="<?php echo $i->detail_qty; ?>" data-satuan="<?php echo $i->detail_satuan; ?>" data-harga="<?php echo number_format($i->detail_harga, 0, '.', ','); ?>" data-disc="<?php echo $i->detail_disc; ?>" data-subtotal="<?php echo number_format($i->detail_total, 0, '.', ','); ?>" data-stok="<?php echo $i->obat_stok; ?>" data-isikecil="<?php echo $i->detail_isi_kcl; ?>" data-satuankecil="<?php echo $i->detail_sat_kcl; ?>" title="Edit Data"><i class="icon-pencil"></i>
                                                     </button>
                                                     <a onclick="hapusDataItem(<?php echo $detail_id; ?>)"><button class="btn btn-danger btn-xs" title="Hapus Data"><i class="icon-trash"></i></button>
                                                     </a>

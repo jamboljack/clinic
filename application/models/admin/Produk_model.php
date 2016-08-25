@@ -31,23 +31,16 @@ class Produk_model extends CI_Model {
 		return $this->db->get();
 	}
 	
-	function insert_data() {
-		// Konversi String ke Integer
-		$Tempat 	= intval(str_replace(",", "", $this->input->post('js_tempat')));
-		$Dokter 	= intval(str_replace(",", "", $this->input->post('js_dokter')));
-		$Perawat 	= intval(str_replace(",", "", $this->input->post('js_perawat')));
-		$Lain 		= intval(str_replace(",", "", $this->input->post('js_lain')));
-		$Harga 		= intval(str_replace(",", "", $this->input->post('harga')));
-
+	function insert_data() {		
 		$data = array(
 				'produk_name'			=> strtoupper(trim($this->input->post('name'))),
 				'jenis_id'				=> trim($this->input->post('lstJenis')),
 				'unit_id'				=> trim($this->input->post('lstUnit')),
-				'produk_js_tempat'		=> $Tempat,
-				'produk_js_dokter'		=> $Dokter,
-				'produk_js_perawat'		=> $Perawat,
-				'produk_js_lain'		=> $Lain,
-				'produk_total'			=> $Harga,
+				'produk_js_tempat'		=> $this->input->post('js_tempat'),
+				'produk_js_dokter'		=> $this->input->post('js_dokter'),
+				'produk_js_perawat'		=> $this->input->post('js_perawat'),
+				'produk_js_lain'		=> $this->input->post('js_lain'),
+				'produk_total'			=> $this->input->post('harga'),
 		   		'produk_date_update' 	=> date('Y-m-d'),
 		   		'produk_time_update' 	=> date('Y-m-d H:i:s')
 		);
@@ -64,23 +57,17 @@ class Produk_model extends CI_Model {
 	}
 
 	function update_data() {
-		$produk_id  = $this->input->post('id');
-		// Konversi String ke Integer
-		$Tempat 	= intval(str_replace(",", "", $this->input->post('js_tempat')));
-		$Dokter 	= intval(str_replace(",", "", $this->input->post('js_dokter')));
-		$Perawat 	= intval(str_replace(",", "", $this->input->post('js_perawat')));
-		$Lain 		= intval(str_replace(",", "", $this->input->post('js_lain')));
-		$Harga 		= intval(str_replace(",", "", $this->input->post('harga')));
+		$produk_id  = $this->input->post('id');		
 		
 		$data = array(
 				'produk_name'			=> strtoupper(trim($this->input->post('name'))),
 				'jenis_id'				=> trim($this->input->post('lstJenis')),
 				'unit_id'				=> trim($this->input->post('lstUnit')),
-				'produk_js_tempat'		=> $Tempat,
-				'produk_js_dokter'		=> $Dokter,
-				'produk_js_perawat'		=> $Perawat,
-				'produk_js_lain'		=> $Lain,
-				'produk_total'			=> $Harga,
+				'produk_js_tempat'		=> $this->input->post('js_tempat'),
+				'produk_js_dokter'		=> $this->input->post('js_dokter'),
+				'produk_js_perawat'		=> $this->input->post('js_perawat'),
+				'produk_js_lain'		=> $this->input->post('js_lain'),
+				'produk_total'			=> $this->input->post('harga'),
 		   		'produk_date_update' 	=> date('Y-m-d'),
 		   		'produk_time_update' 	=> date('Y-m-d H:i:s')
 		);
