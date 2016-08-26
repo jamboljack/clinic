@@ -5,6 +5,23 @@ class Tindakan_model extends CI_Model {
 		parent::__construct();	
 	}	
 	
+	function select_all() {
+		$this->db->select('*');
+		$this->db->from('clinic_rawat');
+		$this->db->where('rawat_date', date('Y-m-d'));
+		$this->db->order_by('rawat_id', 'desc');		
+		
+		return $this->db->get();
+	}
+
+	function select_dokter() {
+		$this->db->select('*');
+		$this->db->from('clinic_dokter');
+		$this->db->order_by('dokter_name', 'asc');		
+		
+		return $this->db->get();
+	}
+
 	function select_total($rawat_id) {
 		$this->db->select('SUM(detail_total) as total');
 		$this->db->from('clinic_rawat_detail');
@@ -39,9 +56,10 @@ class Tindakan_model extends CI_Model {
 	}	
 
 	function select_list_tindakan($rawat_id) {
-		$this->db->select('*');
-		$this->db->from('clinic_rawat_detail');		
-		$this->db->where('rawat_id', $rawat_id);
+		$this->db->select('d.*, p.produk_js_tempat, p.produk_js_dokter, p.produk_js_perawat, p.produk_js_lain');
+		$this->db->from('clinic_rawat_detail d');
+		$this->db->join('clinic_produk p', 'd.produk_id=p.produk_id');
+		$this->db->where('d.rawat_id', $rawat_id);
 		
 		return $this->db->get();
 	}
@@ -56,6 +74,87 @@ class Tindakan_model extends CI_Model {
 		$this->db->where('d.rawat_id', $rawat_id);
 		
 		return $this->db->get();
+	}
+
+	function check_jasa_dokter($CodeProduk) {
+		$rawat_id	= $this->uri->segment(4);
+		$dokter_id 	= trim($this->input->post('dokter_id'));
+
+		$this->db->select('*');
+		$this->db->from('clinic_jasa_dokter');		
+		$this->db->where('produk_id', $CodeProduk);
+		$this->db->where('dokter_id', $dokter_id);
+		$this->db->where('rawat_id', $rawat_id);
+		
+		return $this->db->get();
+	}
+
+	function update_data_item() {		
+		$detail_id 		= $this->input->post('id');
+		$CodeProduk 	= trim($this->input->post('code'));	
+		$rawat_id		= $this->uri->segment(4);
+		$dokter_id 		= trim($this->input->post('dokter_id'));
+
+		$Qty 			= $this->input->post('qty');
+		$Harga 			= intval(str_replace(",", "", $this->input->post('harga')));		
+		$SubTotal 		= intval(str_replace(",", "", $this->input->post('subtotal')));		
+
+		$tgl_trans 		= $this->input->post('tgl_trans');
+		$xtg1ex 		= explode("-",$tgl_trans);
+		$thn1 			= $xtg1ex[2];
+		$bln1 			= $xtg1ex[1];
+		$tgl1 			= $xtg1ex[0];
+		$tanggal_tr 	= $thn1.'-'.$bln1.'-'.$tgl1;
+				
+		// Update Item Detail (Rawat Detail)
+		$data = array(
+				'detail_date'			=> $tanggal_tr,
+				'detail_qty'			=> $this->input->post('qty'),
+				'detail_harga'			=> $Harga,
+				'detail_total'			=> $SubTotal,
+			   	'detail_date_update' 	=> date('Y-m-d'),
+			   	'detail_time_update' 	=> date('Y-m-d H:i:s')
+			);
+		$this->db->where('detail_id', $detail_id);
+		$this->db->update('clinic_rawat_detail', $data);
+
+		// Update Komponen
+		$data = array(
+				'js_tempat'				=> $this->input->post('total_jasa_tempat'),
+				'js_dokter'				=> $this->input->post('total_jasa_dokter'),
+				'js_perawat'			=> $this->input->post('total_jasa_perawat'),
+				'js_lain'				=> $this->input->post('total_jasa_lain')
+			);
+		$this->db->where('produk_id', $CodeProduk);
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->update('clinic_komponen', $data);
+
+		// Insert ke Jasa Dokter
+		if ($this->input->post('total_jasa_dokter') <> 0) {			
+			$data = array(
+					'qty'				=> $Qty,
+					'total'				=> $this->input->post('total_jasa_dokter')
+			);
+
+			$this->db->where('produk_id', $CodeProduk);
+			$this->db->where('dokter_id', $dokter_id);
+			$this->db->where('rawat_id', $rawat_id);
+			$this->db->update('clinic_jasa_dokter', $data);			
+		}
+
+		// Update Total Tindakan
+		$Total 		= $this->tindakan_model->select_total($rawat_id)->row();
+		$Total		= $Total->total; // Total Harga Tindakan Pasien		
+
+		$data = array(
+			'rawat_total'			=> $Total,			
+		   	'rawat_date_update' 	=> date('Y-m-d'),
+		   	'rawat_time_update' 	=> date('Y-m-d H:i:s'),
+		   	'user_username' 		=> trim($this->session->userdata('username'))
+		);
+
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->update('clinic_rawat', $data);
 	}
 
 	function update_data() {

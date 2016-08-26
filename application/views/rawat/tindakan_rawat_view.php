@@ -35,7 +35,9 @@ if ($this->session->flashdata('notification')) { ?>
 <script language="JavaScript" type="text/JavaScript">
 $(document).ready(function(){
     $('#produk_harga').maskMoney({thousands:',', precision:0});    
-    $('#produk_subtotal').maskMoney({thousands:',', precision:0});    
+    $('#produk_subtotal').maskMoney({thousands:',', precision:0});
+    $('#item_harga').maskMoney({thousands:',', precision:0});
+    $('#item_subtotal').maskMoney({thousands:',', precision:0});
 });
 </script>
 
@@ -62,7 +64,6 @@ function HitungSubTotal(){
     myForm.total_jasa_perawat.value = Perawat;
     var Lain        = Qty*parseInt(myForm.jasa_lain.value);
     myForm.total_jasa_lain.value    = Lain;
-    console.log(Tempat, Dokter, Perawat, Lain);
 }
 </script>
 
@@ -76,7 +77,6 @@ $(function() {
         var dokter      = $(this).data('jsdokter');
         var perawat     = $(this).data('jsperawat');
         var lain        = $(this).data('jslain');
-
         $(".produk_id").val(code);
         $(".produk_name").val(name);
         $(".produk_qty").val(1);
@@ -88,6 +88,63 @@ $(function() {
         $(".jasa_lain").val(lain);
     })
 });
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        $(document).on("click",'.edit_item', function(e) {
+            var id          = $(this).data('id');
+            var code        = $(this).data('code');          
+            var name        = $(this).data('name');
+            var qty         = $(this).data('qty');            
+            var harga       = $(this).data('harga');
+            var subtotal    = $(this).data('subtotal');
+            var tgl         = $(this).data('tgl');
+            var tgl_trans   = tgl.split("-").reverse().join("-");
+            var dokter      = $(this).data('dokter');
+            var jstempat    = $(this).data('jstempat');
+            var jsdokter    = $(this).data('jsdokter');
+            var jsperawat   = $(this).data('jsperawat');
+            var jslain      = $(this).data('jslain');            
+            $(".detail_id").val(id);
+            $(".item_code").val(code);
+            $(".item_name").val(name);
+            $(".item_qty").val(qty);
+            $(".item_harga").val(harga);            
+            $(".item_subtotal").val(subtotal);
+            $(".item_tanggal").val(tgl_trans);
+            $(".item_dokter").val(dokter);
+            $(".item_jasa_tempat").val(jstempat);
+            $(".item_jasa_dokter").val(jsdokter);
+            $(".item_jasa_perawat").val(jsperawat);
+            $(".item_jasa_lain").val(jslain);
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function HitungSubTotalItem(){
+    var myForm2     = document.form2;
+    var Qty         = parseFloat(myForm2.item_qty.value);
+    var Harga       = myForm2.item_harga.value;
+    Harga           = Harga.replace(/[,]/g, ''); // Ini String
+    Harga           = parseInt(Harga); // Ini Integer    
+
+    var SubTotal    = (Qty*Harga);
+    if (SubTotal > 0) {
+        myForm2.item_subtotal.value = SubTotal; 
+    } else {
+        myForm2.item_subtotal.value = 0;
+    }    
+    var Tempat      = (Qty*parseInt(myForm2.item_jasa_tempat.value));    
+    myForm2.item_total_jasa_tempat.value  = Tempat;
+    var Dokter      = Qty*parseInt(myForm2.item_jasa_dokter.value);
+    myForm2.item_total_jasa_dokter.value  = Dokter;
+    var Perawat     = Qty*parseInt(myForm2.item_jasa_perawat.value);
+    myForm2.item_total_jasa_perawat.value = Perawat;
+    var Lain        = Qty*parseInt(myForm2.item_jasa_lain.value);
+    myForm2.item_total_jasa_lain.value    = Lain;    
+}
 </script>
 
 <!-- List Daftar Tindakan -->
@@ -147,6 +204,15 @@ $(function() {
             <form action="<?php echo site_url('rawat/tindakan/updatedataitem/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form2">
             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
             <input type="hidden" class="form-control detail_id" name="id">
+            <input type="hidden" class="item_jasa_tempat" name="jasa_tempat" id="item_jasa_tempat">
+            <input type="hidden" class="item_jasa_dokter" name="jasa_dokter" id="item_jasa_dokter">
+            <input type="hidden" class="item_jasa_perawat" name="jasa_perawat" id="item_jasa_perawat">
+            <input type="hidden" class="item_jasa_lain" name="jasa_lain" id="item_jasa_lain">
+
+            <input type="hidden" name="total_jasa_tempat" id="item_total_jasa_tempat">
+            <input type="hidden" name="total_jasa_dokter" id="item_total_jasa_dokter">
+            <input type="hidden" name="total_jasa_perawat" id="item_total_jasa_perawat">
+            <input type="hidden" name="total_jasa_lain" id="item_total_jasa_lain">
                         
             <div class="modal-header">                      
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -154,15 +220,36 @@ $(function() {
             </div>
             <div class="modal-body">
                 <div class="form-group form-md-line-input">
+                    <label class="col-md-3 control-label">ID Produk</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control item_code" name="code" autocomplete="off" readonly>
+                    </div>
+                </div>
+                <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Nama Tindakan</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control item_name" name="name" autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="form-group form-md-line-input">
+                    <label class="col-md-3 control-label">Nama Dokter</label>                    
+                    <div class="col-md-9">
+                        <select class="form-control item_dokter" name="dokter_id" id="dokter_id" required>
+                            <option value="">- Pilih Dokter -</option>
+                            <?php 
+                            foreach($listDokter as $d) {                                
+                            ?>
+                            <option value="<?php echo $d->dokter_id; ?>"><?php echo $d->dokter_name; ?></option>
+                            <?php                                
+                            } 
+                            ?>
+                        </select>  
+                    </div>                            
+                </div>
+                <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Tgl. Input</label>
                     <div class="col-md-4">
-                        <input class="form-control form-control-inline input-medium date-picker item_expired" size="16" type="text" name="tgl_expired" placeholder="DD-MM-YYYY" autocomplete="off" required />
+                        <input class="form-control form-control-inline input-medium date-picker item_tanggal" size="16" type="text" name="tgl_trans" placeholder="DD-MM-YYYY" autocomplete="off" required />
                         <div class="form-control-focus"></div>
                     </div>
                 </div>
@@ -172,27 +259,14 @@ $(function() {
                         <input type="number" class="form-control item_qty" name="qty" id="item_qty" onkeydown="HitungSubTotalItem()" autocomplete="off" required>
                         <div class="form-control-focus"></div>
                     </div>
-                </div>
-                <div class="form-group form-md-line-input">
-                    <label class="col-md-3 control-label">Satuan</label>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control item_satuan" name="satuan" onkeydown="HitungSubTotalItem()" autocomplete="off" readonly>
-                    </div>
-                </div>
+                </div>                
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Harga</label>
                     <div class="col-md-2">
                         <input type="text" class="form-control item_harga" name="harga" id="item_harga" onkeydown="HitungSubTotalItem()" autocomplete="off" required>
                         <div class="form-control-focus"></div>
                     </div>
-                </div>
-                <div class="form-group form-md-line-input">
-                    <label class="col-md-3 control-label">Disc (%)</label>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control item_disc" name="disc" id="item_disc" onkeydown="HitungSubTotalItem()" autocomplete="off" required>
-                        <div class="form-control-focus"></div>
-                    </div>
-                </div>
+                </div>                
                 <div class="form-group form-md-line-input">
                     <label class="col-md-3 control-label">Sub Total</label>
                     <div class="col-md-2">
@@ -297,7 +371,20 @@ $(function() {
                             <a href="javascript:;" class="collapse"></a>
                         </div>
                     </div>
-                    <div class="portlet-body form">                        
+                    <div class="portlet-body form">
+                        <?php 
+                        $tgl_trans  = $detail_pasien->rawat_date;
+
+                        if (!empty($tgl_trans)) {
+                            $mtgl       = explode("-",$tgl_trans);
+                            $thn        = $mtgl[0];
+                            $bln        = $mtgl[1];
+                            $tgl        = $mtgl[2];
+                            $tanggal_tr = $tgl.'-'.$bln.'-'.$thn;
+                        } else { 
+                            $tanggal_tr       = '';
+                        }
+                        ?>
                         <div class="invoice">
                             <div class="row invoice-logo">
                                 <div class="col-xs-6">
@@ -306,7 +393,7 @@ $(function() {
                                 <div class="col-xs-6">
                                 <p>                                
                                 <b><?php echo number_format($Total, 0, '.', ','); ?></b>
-                                <span class="muted">No. Transaksi : <b><?php echo $this->uri->segment(6); ?> / <?php echo date('d-m-Y'); ?></b></span>
+                                <span class="muted">No. Transaksi : <b><?php echo $this->uri->segment(6); ?> / <?php echo $tanggal_tr; ?></b></span>
                                 </p>
                                 </div>
                             </div>
@@ -489,7 +576,7 @@ $(function() {
                                             foreach($listTindakan as $i) {
                                                 $detail_id = $i->detail_id;
 
-                                                $tanggal        = $i->detail_date_update;
+                                                $tanggal        = $i->detail_date;
                                                 if (!empty($tanggal)) {
                                                     $xtanggal   = explode("-",$tanggal);
                                                     $thn        = $xtanggal[0];
@@ -510,7 +597,7 @@ $(function() {
                                                 <td align="right"><?php echo $i->detail_qty; ?></td>
                                                 <td align="right"><?php echo number_format($i->detail_total, 0, '.', ','); ?></td>
                                                 <td align="center">
-                                                    <button type="button" class="btn btn-primary btn-xs edit_item" data-toggle="modal" data-target="#edititem" data-id="<?php echo $i->detail_id; ?>" data-code="<?php echo $i->produk_id; ?>" data-name="<?php echo $i->detail_name; ?>" data-qty="<?php echo $i->detail_qty; ?>" data-harga="<?php echo number_format($i->detail_harga, 0, '.', ','); ?>" data-subtotal="<?php echo number_format($i->detail_total, 0, '.', ','); ?>" data-tgl="<?php echo $i->detail_date_update; ?>" title="Edit Data"><i class="icon-pencil"></i>
+                                                    <button type="button" class="btn btn-primary btn-xs edit_item" data-toggle="modal" data-target="#edititem" data-id="<?php echo $i->detail_id; ?>" data-code="<?php echo $i->produk_id; ?>" data-name="<?php echo $i->detail_name; ?>" data-qty="<?php echo $i->detail_qty; ?>" data-harga="<?php echo number_format($i->detail_harga, 0, '.', ','); ?>" data-subtotal="<?php echo number_format($i->detail_total, 0, '.', ','); ?>" data-tgl="<?php echo $i->detail_date; ?>" data-dokter="<?php echo $i->dokter_id; ?>" data-jstempat="<?php echo $i->produk_js_tempat; ?>" data-jsdokter="<?php echo $i->produk_js_dokter; ?>" data-jsperawat="<?php echo $i->produk_js_perawat; ?>" data-jslain="<?php echo $i->produk_js_lain; ?>" title="Edit Data"><i class="icon-pencil"></i>
                                                     </button>
                                                     <a onclick="hapusDataItem(<?php echo $detail_id; ?>)"><button class="btn btn-danger btn-xs" title="Hapus Data"><i class="icon-trash"></i></button>
                                                     </a>

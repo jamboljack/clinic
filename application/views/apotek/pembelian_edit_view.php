@@ -136,8 +136,7 @@ function checktxtbox(){
             var expired     = expire.split("-").reverse().join("-");
             var stok        = $(this).data('stok');
             var isi         = $(this).data('isikecil');
-            var satuankecil = $(this).data('satuankecil');
-            console.log(expired);
+            var satuankecil = $(this).data('satuankecil');            
             $(".detail_id").val(id);
             $(".item_code").val(code);
             $(".item_name").val(name);
@@ -149,8 +148,7 @@ function checktxtbox(){
             $(".item_expired").val(expired);
             $(".item_stok").val(stok);
             $(".item_isi").val(isi);
-            $(".item_satuankecil").val(satuankecil);
-            console.log(stok, isi, satuankecil);
+            $(".item_satuankecil").val(satuankecil);            
         })
     });
 </script>
@@ -198,11 +196,9 @@ function HitungTotalNetto() {
         var TotalPPN        = ((PPN*TotalBruto)/100); // PPN dari Total Bruto    
     }
     
-    if (PPN === 0) {
-        console.log('Bruto');
+    if (PPN === 0) {        
         myForm3.total_netto.value = TotalBruto;    
-    } else {
-        console.log('Bruto + PPN');
+    } else {        
         var TotalNetto = (TotalBruto+TotalPPN); // Bruto + PPN + Materai
         myForm3.total_netto.value = TotalNetto;        
     }
