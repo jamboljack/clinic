@@ -14,7 +14,7 @@
             cancelButtonText: 'No',
             closeOnConfirm: true
         }, function() {
-            window.location.href="<?php echo site_url('rawat/pendaftaran/deletedataitem/'.$this->uri->segment(4)); ?>"+"/"+id
+            window.location.href="<?php echo site_url('rawat/tindakan/deletedataitem/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>"+"/"+id
         });
     }
 </script>
@@ -393,7 +393,7 @@ function HitungSubTotalItem(){
                                 <div class="col-xs-6">
                                 <p>                                
                                 <b><?php echo number_format($Total, 0, '.', ','); ?></b>
-                                <span class="muted">No. Transaksi : <b><?php echo $this->uri->segment(6); ?> / <?php echo $tanggal_tr; ?></b></span>
+                                <span class="muted">No. Transaksi : <b><?php echo $detail_pasien->rawat_no_trans; ?> / <?php echo $tanggal_tr; ?></b></span>
                                 </p>
                                 </div>
                             </div>
@@ -534,11 +534,11 @@ function HitungSubTotalItem(){
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit" class="btn green submit" id="SaveItem"><i class="fa fa-plus-circle"></i> Tambah Tindakan</button>
-                                        <button type="button" class="btn blue simpan" data-toggle="modal" data-target="#bayar" title="Pembayaran"><i class="fa fa-floppy-o"></i> Bayar
-                                        </button>
                                         <a href="<?php echo site_url('rawat/tindakan/bhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn purple"><i class="fa fa-medkit"></i> BHP</a>
+                                        <button type="button" class="btn blue simpan" data-toggle="modal" data-target="#bayar" title="Pembayaran"><i class="fa fa-floppy-o"></i> Bayar
+                                        </button>                                        
                                         <a href="<?php echo site_url('rawat/tindakan/bhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn red"><i class="fa fa-print"></i> Print Billing</a>
-                                        <a href="<?php echo site_url('rawat/tindakan'); ?>" class="btn yellow"><i class="fa fa-times"></i> Batal</a>                                        
+                                        <a href="<?php echo site_url('rawat/tindakan'); ?>" class="btn yellow"><i class="fa fa-times"></i> Kembali</a>                                        
                                     </div>
                                 </div>                            
                             </div>

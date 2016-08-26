@@ -183,5 +183,17 @@ class Tindakan extends CI_Controller {
 			echo "<meta http-equiv=refresh content=0;url=\"".site_url()."rawat/pendaftaran\">";
 		}
 	}
+
+	public function deletedataitem($kode) {
+		$kode = $this->security->xss_clean($this->uri->segment(7));
+		
+		if ($kode == null) {
+			redirect(site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)));
+		} else {
+			$this->tindakan_model->delete_data_item($kode);
+			$this->session->set_flashdata('notification','Hapus Item Sukses.');
+			redirect(site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)));
+		}
+	}
 }
 /* Location: ./application/controller/rawat/Tindakan.php */

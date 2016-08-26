@@ -187,5 +187,50 @@ class Tindakan_model extends CI_Model {
 		$this->db->where('suplier_id', $kode);
 		$this->db->delete('clinic_suplier');
 	}
+
+	function select_item($kode) {		
+		$this->db->select('produk_id, dokter_id');
+		$this->db->from('clinic_rawat_detail');
+		$this->db->where('detail_id', $kode);
+
+		return $this->db->get();
+	}
+
+	function delete_data_item($kode) {
+		$rawat_id 	= $this->uri->segment(4);		
+
+		$checkdata_item_delete = $this->tindakan_model->select_item($kode)->row();
+		$produk_id = $checkdata_item_delete->produk_id;
+		$dokter_id = $checkdata_item_delete->dokter_id;
+		
+		// Hapus Komponen
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->where('produk_id', $produk_id);
+		$this->db->delete('clinic_komponen');
+
+		// Hapus Jasa Dokter
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->where('produk_id', $produk_id);
+		$this->db->where('dokter_id', $dokter_id);
+		$this->db->delete('clinic_jasa_dokter');
+
+		// Hapus Data Item Pembelian
+		$this->db->where('detail_id', $kode);
+		$this->db->delete('clinic_rawat_detail');
+
+		// Update Total
+		$Total 		= $this->tindakan_model->select_total($rawat_id)->row();
+		$Total		= $Total->total; // Total Harga Tindakan Pasien		
+
+		$data = array(
+			'rawat_total'			=> $Total,			
+		   	'rawat_date_update' 	=> date('Y-m-d'),
+		   	'rawat_time_update' 	=> date('Y-m-d H:i:s'),
+		   	'user_username' 		=> trim($this->session->userdata('username'))
+		);
+
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->update('clinic_rawat', $data);
+	}
 }
 /* Location: ./application/model/rawat/Tindakan_model.php */
