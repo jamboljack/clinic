@@ -178,7 +178,7 @@ if ($uri == 'home') {
             <li class="<?php echo $daftar; ?>">
                 <a href="javascript:;">
                     <i class="fa fa-folder"></i>
-                    <span class="title">Pendaftaran</span>
+                    <span class="title">Transaksi Rawat Jalan</span>
                     <?php echo $span_daftar_1; ; ?>
                     <span class="arrow <?php echo $span_daftar_2; ?>"></span>
                 </a>

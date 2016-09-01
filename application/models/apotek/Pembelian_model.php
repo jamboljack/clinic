@@ -23,7 +23,7 @@ class Pembelian_model extends CI_Model {
 	}
 
 	function select_obat() {
-		$this->db->select('obat_code, obat_name, obat_hrg_kms, obat_sat_kms, obat_hrg_kcl, obat_hrg_kms,
+		$this->db->select('obat_code, obat_name, obat_hrg_kms, obat_sat_kms, obat_hrg_kcl,
 							obat_isi_kcl, obat_sat_kcl, obat_stok');
 		$this->db->from('clinic_obat');
 		$this->db->where('obat_st_aktif', 1);

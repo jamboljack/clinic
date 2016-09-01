@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tindakan_model extends CI_Model {
+class Resep_model extends CI_Model {
 	function __construct() {
 		parent::__construct();	
 	}	
@@ -520,4 +520,4 @@ class Tindakan_model extends CI_Model {
 		$this->db->update('clinic_jual', $data);
 	}
 }
-/* Location: ./application/model/rawat/Tindakan_model.php */
+/* Location: ./application/model/rawat/Resep_model.php */

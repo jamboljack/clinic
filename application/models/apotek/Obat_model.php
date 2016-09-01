@@ -102,8 +102,8 @@ class Obat_model extends CI_Model {
 				'obat_st_aktif'		=> $this->input->post('chkStatus'),
 				'obat_zat_aktif'	=> strtoupper(trim($this->input->post('zat_aktif'))),
 				'obat_hrg_kms_g'	=> $this->input->post('kms_grosir'),
-				'obat_hrg_kms_e'	=> $this->input->post('kcl_grosir'),
-				'obat_hrg_kcl_g'	=> $this->input->post('kms_eceran'),
+				'obat_hrg_kms_e'	=> $this->input->post('kms_eceran'),
+				'obat_hrg_kcl_g'	=> $this->input->post('kcl_grosir'),
 				'obat_hrg_kcl_e'	=> $this->input->post('kcl_eceran'),
 		   		'obat_date_update' 	=> date('Y-m-d'),
 		   		'obat_time_update' 	=> date('Y-m-d H:i:s')
@@ -145,8 +145,8 @@ class Obat_model extends CI_Model {
 				'obat_st_aktif'		=> $this->input->post('chkStatus'),
 				'obat_zat_aktif'	=> strtoupper(trim($this->input->post('zat_aktif'))),
 				'obat_hrg_kms_g'	=> $this->input->post('kms_grosir'),
-				'obat_hrg_kms_e'	=> $this->input->post('kcl_grosir'),
-				'obat_hrg_kcl_g'	=> $this->input->post('kms_eceran'),
+				'obat_hrg_kms_e'	=> $this->input->post('kms_eceran'),
+				'obat_hrg_kcl_g'	=> $this->input->post('kcl_grosir'),
 				'obat_hrg_kcl_e'	=> $this->input->post('kcl_eceran'),
 		   		'obat_date_update' 	=> date('Y-m-d'),
 		   		'obat_time_update' 	=> date('Y-m-d H:i:s')

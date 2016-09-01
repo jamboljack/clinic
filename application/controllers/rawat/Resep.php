@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Tindakan extends CI_Controller {
+class Resep extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		if(!$this->session->userdata('logged_in_clinic')) redirect(base_url());
@@ -540,4 +540,4 @@ class Tindakan extends CI_Controller {
 		redirect(site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)));
 	}
 }
-/* Location: ./application/controller/rawat/Tindakan.php */
+/* Location: ./application/controller/rawat/Resep.php */

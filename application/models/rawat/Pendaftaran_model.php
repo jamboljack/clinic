@@ -26,7 +26,7 @@ class Pendaftaran_model extends CI_Model {
             $mkd  = 1;
         }
         
-        return $mkd;
+        return 'CM'.$mkd;
    	}
 
    	function getnotransaksi() {
