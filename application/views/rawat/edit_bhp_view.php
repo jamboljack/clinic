@@ -52,14 +52,6 @@ $(document).ready(function(){
 });
 </script>
 
-<script language="JavaScript" type="text/JavaScript">
-function mySupplier() { 
-    var x           = document.getElementById("lstSuplier"); 
-    var Address     = x.options[(x.selectedIndex)].getAttribute('data-address');    
-    document.getElementById("address").value = Address;    
-}
-</script>
-
 <script type="text/javascript">
 $(function() {
     $(document).on("click",'.pilih_item', function(e) {        
@@ -499,7 +491,7 @@ function HitungTotalNetto() {
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Tambah BHP Pasien</a>
+                    <a href="#">Edit BHP Pasien</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>

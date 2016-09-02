@@ -34,7 +34,7 @@ if ($this->session->flashdata('notification')) { ?>
 <div class="page-content-wrapper">
     <div class="page-content">            
         <h3 class="page-title">
-            Pendaftaran <small>Tindakan Pasien</small>
+            Transaksi Rawat Jalan <small>Resep Pasien</small>
         </h3>
         <div class="page-bar">
             <ul class="page-breadcrumb">                    
@@ -44,25 +44,32 @@ if ($this->session->flashdata('notification')) { ?>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Pendaftaran</a>
+                    <a href="#">Transaksi Rawat Jalan</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Tindakan Pasien</a>
+                    <a href="#">Resep Pasien</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="#">Pilih Data Pasien</a>
                 </li>
             </ul>                
         </div>            
                         
         <div class="row">
-            <div class="col-md-12">                
+            <div class="col-md-12">
+                <a href="<?php echo site_url('rawat/resep'); ?>">
+                    <button type="submit" class="btn yellow"><i class="fa fa-times"></i> Kembali</button>
+                </a>
+                <br><br>
                 <div class="portlet box red-intense">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-list"></i> Daftar Pasien Hari Ini
+                            <i class="fa fa-list"></i> Pilih Data Pasien
                         </div>
                         <div class="tools"></div>
-                    </div>
-
+                    </div>                    
                     <div class="portlet-body">                        
                         <table class="table table-striped table-bordered table-hover" id="sample_1">
                         <thead>
@@ -72,8 +79,7 @@ if ($this->session->flashdata('notification')) { ?>
                                 <th width="15%">Tanggal</th>
                                 <th>Nama Pasien</th>
                                 <th width="15%">Poliklinik</th>
-                                <th width="15%">Dokter</th>
-                                <th width="8%">Total</th>
+                                <th width="20%">Dokter</th>
                                 <th width="5%">Status</th>
                                 <th width="5%">Aksi</th>
                             </tr>
@@ -102,7 +108,6 @@ if ($this->session->flashdata('notification')) { ?>
                                 <td><?php echo $r->pasien_nama; ?></td>
                                 <td><?php echo $r->poliklinik_name; ?></td>
                                 <td><?php echo $r->dokter_name; ?></td>
-                                <td><?php echo number_format($r->rawat_total, 0, '.', ','); ?></td>
                                 <td>
                                     <?php if ($r->rawat_st_bayar == 'Open') { ?>
                                     <span class="label label-primary"><?php echo $r->rawat_st_bayar; ?></span>
@@ -111,7 +116,7 @@ if ($this->session->flashdata('notification')) { ?>
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <a href="<?php echo site_url('rawat/tindakan/id/'.$r->rawat_id.'/'.$r->jenis_id.'/'.$r->rawat_no_trans); ?>"><button class="btn btn-primary btn-xs" title="Edit Data"><i class="icon-pencil"></i></button></a>
+                                    <a href="<?php echo site_url('rawat/resep/addresep/'.$r->rawat_id.'/'.$r->jenis_id); ?>"><button class="btn btn-primary btn-xs" title="Tambah Data"><i class="fa fa-plus-square"></i></button></a>
                                 </td>
                             </tr>
                             <?php

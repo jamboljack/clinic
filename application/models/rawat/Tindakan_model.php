@@ -12,7 +12,7 @@ class Tindakan_model extends CI_Model {
 		$this->db->join('clinic_poliklinik l', 'r.poliklinik_id=l.poliklinik_id');
 		$this->db->join('clinic_dokter d', 'r.dokter_id=d.dokter_id');
 		$this->db->where('r.rawat_st_bayar', 'Open');
-		$this->db->order_by('r.rawat_id', 'desc');		
+		$this->db->order_by('r.rawat_id', 'desc');
 		
 		return $this->db->get();
 	}
@@ -164,29 +164,29 @@ class Tindakan_model extends CI_Model {
 
 	function update_data() {
 		$rawat_id     	= $this->uri->segment(4);
-		$JenisBayar		= trim($this->input->post('lstJenisBayar'));
+		$data = array(					
+				'rawat_perawatan'		=> trim($this->input->post('lstPerawatan')),
+				'rawat_tindakan'		=> trim($this->input->post('lstTindakan')),
+				'user_username' 		=> trim($this->session->userdata('username')),
+		   		'rawat_date_update' 	=> date('Y-m-d'),
+		   		'rawat_time_update' 	=> date('Y-m-d H:i:s')
+		);
+		
+		$this->db->where('rawat_id', $rawat_id);
+		$this->db->update('clinic_rawat', $data);
+	}
 
-		if ($JenisBayar == '-') {
-			$data = array(					
-					'rawat_perawatan'		=> trim($this->input->post('lstPerawatan')),
-					'rawat_tindakan'		=> trim($this->input->post('lstTindakan')),
-					'user_username' 		=> trim($this->session->userdata('username')),
-			   		'rawat_date_update' 	=> date('Y-m-d'),
-			   		'rawat_time_update' 	=> date('Y-m-d H:i:s')
-			);
-		} else {
-			$data = array(
-					'rawat_tgl_bayar' 		=> date('Y-m-d'),
-					'rawat_jns_bayar'		=> trim($this->input->post('lstJenisBayar')),
-					'rawat_perawatan'		=> trim($this->input->post('lstPerawatan')),
-					'rawat_tindakan'		=> trim($this->input->post('lstTindakan')),
-					'rawat_st_bayar'		=> 'Close',
-					'user_username' 		=> trim($this->session->userdata('username')),
-			   		'rawat_date_update' 	=> date('Y-m-d'),
-			   		'rawat_time_update' 	=> date('Y-m-d H:i:s')
-			);
-		}
-
+	function pembayaran_data() {
+		$rawat_id     	= $this->uri->segment(4);
+		$data = array(					
+				'rawat_jns_bayar'		=> trim($this->input->post('lstJenisBayar')),
+				'rawat_tgl_bayar'		=> date('Y-m-d'),
+				'rawat_st_bayar'		=> 'Close',
+				'user_username' 		=> trim($this->session->userdata('username')),
+		   		'rawat_date_update' 	=> date('Y-m-d'),
+		   		'rawat_time_update' 	=> date('Y-m-d H:i:s')
+		);
+		
 		$this->db->where('rawat_id', $rawat_id);
 		$this->db->update('clinic_rawat', $data);
 	}
@@ -462,9 +462,39 @@ class Tindakan_model extends CI_Model {
 		$this->db->update('clinic_rawat', $data);
 	}
 
+	function select_item_hapus($kode) { // Cek Detail Item Jual
+		$this->db->select('*');
+		$this->db->from('clinic_jual_detail');
+		$this->db->where('detail_id', $kode);		
+		
+		return $this->db->get();
+	}
+
+	function select_detail_obat_hapus($obat_code) { // Cek Stok Akhir Master Obat
+		$this->db->select('*');
+		$this->db->from('clinic_obat');
+		$this->db->where('obat_code', $obat_code);		
+		
+		return $this->db->get();
+	}
+
 	function delete_data_item_bhp($kode) {
 		$rawat_id 	= $this->uri->segment(4);
 		$jual_id 	= $this->uri->segment(7);
+
+		// Update Stok Obat Lagi
+		$Checkdetail 	= $this->resep_model->select_item_hapus($kode)->row(); // Detail Resep Jual by Detail ID
+		$obat_code 		= $Checkdetail->obat_code; // Kode Obat
+		$qty 			= $Checkdetail->detail_qty; // Qty Jual
+		// Cari Stok Terakhir
+		$check_stok = $this->resep_model->select_detail_obat_hapus($obat_code)->row();
+		$stokakhir 	= $check_stok->obat_stok;
+		$data = array(
+				'obat_stok' => ($stokakhir+$qty) // Stok Akhir + Qty Jual
+			); 
+		// Update Stok
+		$this->db->where('obat_code', $obat_code);
+		$this->db->update('clinic_obat', $data);
 
 		// Hapus Data Item Pembelian
 		$this->db->where('detail_id', $kode);

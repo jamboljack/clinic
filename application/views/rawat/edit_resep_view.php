@@ -9,11 +9,11 @@
 <script src="<?php echo base_url(); ?>js/sweetalert2.min.js"></script>
 <script src="<?php echo base_url(); ?>js/jquery.maskMoney.min.js"></script>
 <script>
-    function hapusDataItemBhp(detail_id) {
+    function hapusDataItem(detail_id) {
         var id = detail_id;
         swal({
             title: 'Hapus Item ?',
-            text: 'Data BHP ini Akan di Hapus !',type: 'warning',
+            text: 'Data Obat ini Akan di Hapus !',type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -21,7 +21,7 @@
             cancelButtonText: 'No',
             closeOnConfirm: true
         }, function() {
-            window.location.href="<?php echo site_url('rawat/tindakan/deletedataitembhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>"+"/"+id
+            window.location.href="<?php echo site_url('rawat/resep/deletedataitemedit/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>"+"/"+id
         });
     }
 </script>
@@ -249,7 +249,7 @@ function HitungTotalNetto() {
 <div class="modal bs-modal-lg" id="edititem" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="<?php echo site_url('rawat/tindakan/updatedataitembhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form2">
+            <form action="<?php echo site_url('rawat/resep/updatedataitemedit/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form2">
             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
             <input type="hidden" class="form-control detail_id" name="id">
             <input type="hidden" class="form-control item_code" name="code">
@@ -317,16 +317,16 @@ function HitungTotalNetto() {
     </div>    
 </div>
 
-<!-- Pembayaran -->
-<div class="modal fade" id="bayar" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Simpan Data -->
+<div class="modal fade" id="simpan" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-full">
         <div class="modal-content">
-            <form action="<?php echo site_url('rawat/tindakan/updatedatabhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
+            <form action="<?php echo site_url('rawat/resep/updatedata/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Simpan Biaya Obat & Alkes</h4>
+                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Simpan Resep Obat</h4>
                 </div>
                 
                 <div class="modal-body">
@@ -335,16 +335,28 @@ function HitungTotalNetto() {
                             <div class="form-group form-md-line-input">
                                 <label class="col-md-4 control-label" for="form_control_1">No. Faktur</label>
                                 <div class="col-md-8">                                                
-                                    <input type="text" class="form-control" name="no_faktur" value="<?php echo $KodePJ.' - '.$this->uri->segment(6); ?>" autocomplete="off" readonly>
+                                    <input type="text" class="form-control" name="no_faktur" value="<?php echo $detail->jual_no_faktur; ?>" autocomplete="off" readonly>
                                     <div class="form-control-focus"></div>
                                 </div>
                             </div>
                         </div>
+                        <?php 
+                        $tanggal        = $detail->jual_date;
+                        if (!empty($tanggal)) {
+                            $xtanggal   = explode("-",$tanggal);
+                            $thn        = $xtanggal[0];
+                            $bln        = $xtanggal[1];
+                            $tgl        = $xtanggal[2];
+                            $date       = $tgl.'-'.$bln.'-'.$thn;
+                        } else { 
+                            $date       = '';
+                        }
+                        ?>
                         <div class="col-md-6">
                             <div class="form-group form-md-line-input">
                                 <label class="col-md-4 control-label" for="form_control_1">Tanggal Faktur</label>
                                 <div class="col-md-5">                                                
-                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" name="tgl_faktur" value="<?php echo date('d-m-Y'); ?>" autocomplete="off" required />
+                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" name="tgl_faktur" value="<?php echo $date; ?>" autocomplete="off" required />
                                     <div class="form-control-focus"></div>
                                 </div>
                             </div>
@@ -379,7 +391,7 @@ function HitungTotalNetto() {
                                         <option value="">- Pilih Dokter -</option>
                                         <?php 
                                         foreach($listDokter as $d) {
-                                            if ($detail_pasien->dokter_id == $d->dokter_id) {
+                                            if ($detail->dokter_id == $d->dokter_id) {
                                         ?>
                                             <option value="<?php echo $d->dokter_id; ?>" selected><?php echo $d->dokter_name; ?></option>
                                         <?php } else { ?>
@@ -429,8 +441,8 @@ function HitungTotalNetto() {
                                 <div class="col-md-8">
                                     <select class="form-control" name="lstStatusObat" required>
                                         <option value="">- Pilih Status Obat -</option>
-                                        <option value="Resep">Resep</option>
-                                        <option value="Non Resep">Non Resep</option>
+                                        <option value="Resep" <?php if ($detail->jual_resep == 'Resep') { echo 'selected'; } ?>>Resep</option>
+                                        <option value="Non Resep" <?php if ($detail->jual_resep == 'Non Resep') { echo 'selected'; } ?>>Non Resep</option>
                                     </select>
                                     <div class="form-control-focus"></div>
                                 </div>
@@ -457,11 +469,78 @@ function HitungTotalNetto() {
     </div>
 </div>
 
+<!-- Pembayaran -->
+<div class="modal bs-modal-lg" id="bayar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="<?php echo site_url('rawat/resep/pembayaran/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
+            <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Pembayaran Billing Pasien</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">                
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">No. Faktur</label>
+                                <div class="col-md-8">                                                
+                                    <input type="text" class="form-control" name="no_lpb" value="<?php echo $detail->jual_no_faktur; ?>" autocomplete="off" readonly>
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Tanggal Faktur</label>
+                                <div class="col-md-5">                                                
+                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" name="tgl_faktur" value="<?php echo date('d-m-Y'); ?>" placeholder="DD-MM-YYYY" autocomplete="off" required />
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row">                
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Jenis Pembayaran</label>
+                                <div class="col-md-8">                                    
+                                    <select class="form-control" name="lstJenisBayar" required>
+                                        <option value="-" <?php if ($detail->jual_pay_type=='-') { echo 'selected'; } ?>>- Pilih Jenis Pembayaran -</option>
+                                        <option value="Cash" <?php if ($detail->jual_pay_type=='Cash') { echo 'selected'; } ?>>Cash</option>
+                                        <option value="Credit" <?php if ($detail->jual_pay_type=='Credit') { echo 'selected'; } ?>>Credit</option>                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Total Billing</label>
+                                <div class="col-md-8">                                                
+                                    <input type="text" class="form-control" name="total_netto" id="total_netto" value="<?php echo number_format($Total, 0, '.', ','); ?>" autocomplete="off" readonly>
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green"><i class="fa fa-floppy-o"></i> Bayar</button>
+                    <button type="button" class="btn yellow" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                </div>
+            </form>            
+        </div>
+    </div>
+</div>
+
 
 <div class="page-content-wrapper">
     <div class="page-content">            
         <h3 class="page-title">
-            Transaksi Rawat Jalan <small>Tindakan Pasien</small>
+            Transaksi Rawat Jalan <small>Resep Pasien</small>
         </h3>
         <div class="page-bar">
             <ul class="page-breadcrumb">                    
@@ -475,15 +554,15 @@ function HitungTotalNetto() {
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="<?php echo site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>">Tindakan Pasien</a>
+                    <a href="<?php echo site_url('rawat/resep'); ?>">Resep Pasien</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Tambah BHP Pasien</a>
+                    <a href="#">Edit Resep Pasien</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">No. Transaksi : <b><?php echo $this->uri->segment(6); ?></b></a>                    
+                    <a href="#">No. Faktur : <b><?php echo $this->uri->segment(6); ?></b></a>                    
                 </li>
             </ul>                
         </div>            
@@ -563,10 +642,9 @@ function HitungTotalNetto() {
                 <div class="portlet box red-intense">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-medkit"></i> Tambah BHP Pasien
+                            <i class="fa fa-medkit"></i> Edit Resep Pasien
                         </div>
-                    </div>
-                    
+                    </div>                    
                     <div class="portlet-body form">                        
                         <div class="invoice">
                             <div class="row invoice-logo">
@@ -576,7 +654,7 @@ function HitungTotalNetto() {
                                 <div class="col-xs-6">
                                 <p>                                
                                 <b><?php echo number_format($Total, 0, '.', ','); ?></b>
-                                <span class="muted">No. Faktur : <b><?php echo $KodePJ; ?> / <?php echo date('d-m-Y'); ?></b></span>
+                                <span class="muted">No. Faktur : <b><?php echo $detail->jual_no_faktur; ?> / <?php echo date('d-m-Y'); ?></b></span>
                                 </p>
                                 </div>
                             </div>
@@ -587,10 +665,10 @@ function HitungTotalNetto() {
 
                 <div class="portlet light bordered">
                     <div class="portlet-body form">
-                        <form role="form" action="<?php echo site_url('rawat/tindakan/savedatabhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" method="post" enctype="multipart/form-data" name="form1">
+                        <form role="form" action="<?php echo site_url('rawat/resep/savedataedit/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6).'/'.$this->uri->segment(7)); ?>" method="post" enctype="multipart/form-data" name="form1">
                         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">         
                         <input type="hidden" name="pasien_id" value="<?php echo $detail_pasien->pasien_id; ?>">
-                        <input type="hidden" name="dokter_id" value="<?php echo $detail_pasien->dokter_id; ?>">                        
+                        <input type="hidden" name="dokter_id" value="<?php echo $detail_pasien->dokter_id; ?>">
                         <input type="hidden" class="obat_stok" name="stokakhir">
                         <input type="hidden" class="obat_hpp" name="hrg_pokok">                        
 
@@ -669,9 +747,12 @@ function HitungTotalNetto() {
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit" class="btn green submit" id="SaveItem"><i class="fa fa-plus-circle"></i> Tambah Item</button>
-                                        <button type="button" class="btn blue simpan" data-toggle="modal" data-target="#bayar" title="Simpan Data"><i class="fa fa-floppy-o"></i> Simpan
-                                        </button>                                        
-                                        <a href="<?php echo site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn yellow"><i class="fa fa-times"></i> Batal</a>
+                                        <button type="button" class="btn blue" data-toggle="modal" data-target="#simpan" title="Simpan Data"><i class="fa fa-floppy-o"></i> Simpan
+                                        </button>
+                                        <button type="button" class="btn red" data-toggle="modal" data-target="#bayar" title="Bayar Billing"><i class="fa fa-floppy-o"></i> Bayar
+                                        </button>
+                                        <a href="<?php echo site_url('rawat/resep'); ?>" class="btn grey"><i class="fa fa-print"></i> Print Billing</a>
+                                        <a href="<?php echo site_url('rawat/resep'); ?>" class="btn yellow"><i class="fa fa-times"></i> Kembali</a>
                                     </div>
                                 </div>                            
                             </div>
@@ -722,7 +803,7 @@ function HitungTotalNetto() {
                                                 <td align="center">
                                                     <button type="button" class="btn btn-primary btn-xs edit_item" data-toggle="modal" data-target="#edititem" data-id="<?php echo $i->detail_id; ?>" data-code="<?php echo $i->obat_code; ?>" data-name="<?php echo $i->detail_name; ?>" data-qty="<?php echo $i->detail_qty; ?>" data-satuan="<?php echo $i->detail_satuan; ?>" data-harga="<?php echo number_format($i->detail_harga, 0, '.', ','); ?>" data-disc="<?php echo $i->detail_disc; ?>" data-subtotal="<?php echo number_format($i->detail_total, 0, '.', ','); ?>" data-stok="<?php echo $i->obat_stok; ?>" title="Edit Data"><i class="icon-pencil"></i>
                                                     </button>
-                                                    <a onclick="hapusDataItemBhp(<?php echo $detail_id; ?>)"><button class="btn btn-danger btn-xs" title="Hapus Data"><i class="icon-trash"></i></button>
+                                                    <a onclick="hapusDataItem(<?php echo $detail_id; ?>)"><button class="btn btn-danger btn-xs" title="Hapus Data"><i class="icon-trash"></i></button>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -737,19 +818,7 @@ function HitungTotalNetto() {
                         </div>
                     </div>
                 </div>
-                <!--
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
-                        <div class="well">                                
-                            <div class="row static-info align-reverse">
-                                <div class="col-md-8 name">Grand Total :</div>
-                                <div class="col-md-3 value"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-                -->
+                
             </div>
         </div>
 

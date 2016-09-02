@@ -302,8 +302,8 @@ function HitungSubTotalItem(){
     </div>    
 </div>
 
-<!-- Pembayaran -->
-<div class="modal bs-modal-lg" id="bayar" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Simpan Data -->
+<div class="modal bs-modal-lg" id="simpan" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="<?php echo site_url('rawat/tindakan/updatedata/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
@@ -311,7 +311,7 @@ function HitungSubTotalItem(){
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Pembayaran Billing Pasien</h4>
+                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Simpan Billing Pasien</h4>
                 </div>
                 
                 <div class="modal-body">
@@ -376,13 +376,70 @@ function HitungSubTotalItem(){
                             </div>
                         </div>                       
                     </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green"><i class="fa fa-floppy-o"></i> Simpan</button>
+                    <button type="button" class="btn yellow" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                </div>
+            </form>            
+        </div>
+    </div>
+</div>
+
+<!-- Pembayaran -->
+<div class="modal bs-modal-lg" id="bayar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="<?php echo site_url('rawat/tindakan/pembayaran/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="form-horizontal" method="post" enctype="multipart/form-data" role="form" name="form3">
+            <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"><i class="fa fa-check-circle"></i> Pembayaran Billing Pasien</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">                
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">No. Transaksi</label>
+                                <div class="col-md-8">                                                
+                                    <input type="text" class="form-control" name="no_lpb" value="<?php echo $detail_pasien->rawat_no_trans; ?>" autocomplete="off" readonly>
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php 
+                        $tgl_trans  = $detail_pasien->rawat_date;
+
+                        if (!empty($tgl_trans)) {
+                            $mtgl       = explode("-",$tgl_trans);
+                            $thn        = $mtgl[0];
+                            $bln        = $mtgl[1];
+                            $tgl        = $mtgl[2];
+                            $tanggal_tr = $tgl.'-'.$bln.'-'.$thn;
+                        } else { 
+                            $tanggal_tr = date('d-m-Y');
+                        }
+                        ?>
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Tanggal Transaksi</label>
+                                <div class="col-md-5">                                                
+                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" name="tgl_faktur" value="<?php echo $tanggal_tr; ?>" placeholder="DD-MM-YYYY" autocomplete="off" required />
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>                    
                     <div class="row">                
                         <div class="col-md-6">
                             <div class="form-group form-md-line-input">
                                 <label class="col-md-4 control-label" for="form_control_1">Jenis Pembayaran</label>
                                 <div class="col-md-8">                                    
-                                    <select class="form-control" name="lstJenisBayar">
-                                        <option value="-" <?php if ($detail_pasien->rawat_jns_bayar == '-') { echo 'selected'; } ?>>- Pilih Jenis Pembayaran -</option>
+                                    <select class="form-control" name="lstJenisBayar" required>
+                                        <option value="" <?php if ($detail_pasien->rawat_jns_bayar == '-') { echo 'selected'; } ?>>- Pilih Jenis Pembayaran -</option>
                                         <option value="Cash" <?php if ($detail_pasien->rawat_jns_bayar == 'Cash') { echo 'selected'; } ?>>Cash</option>
                                         <option value="Credit" <?php if ($detail_pasien->rawat_jns_bayar == 'Credit') { echo 'selected'; } ?>>Credit</option>                                        
                                     </select>
@@ -432,7 +489,7 @@ function HitungSubTotalItem(){
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="#">Tambah Tindakan Pasien</a>
+                    <a href="#">Daftar Tindakan Pasien</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -532,11 +589,31 @@ function HitungSubTotalItem(){
                         } else { 
                             $tanggal_tr     = date('d-m-Y');
                         }
+
+                        $tgl_bayar  = $detail_pasien->rawat_tgl_bayar;
+
+                        if (!empty($tgl_bayar)) {
+                            $mtgl           = explode("-",$tgl_bayar);
+                            $thn            = $mtgl[0];
+                            $bln            = $mtgl[1];
+                            $tgl            = $mtgl[2];
+                            $tanggal_byr    = $tgl.'-'.$bln.'-'.$thn;
+                        } else { 
+                            $tanggal_byr    = '';
+                        }
                         ?>
                         <div class="invoice">
                             <div class="row invoice-logo">
                                 <div class="col-xs-6">
-                                    <p><b>TOTAL</b></p>
+                                    <p>
+                                    <b>TOTAL</b>
+                                    <span class="muted">
+                                    Status : <b><?php echo $detail_pasien->rawat_st_bayar; ?></b>
+                                    <?php if ($detail_pasien->rawat_jns_bayar <> '-') { ?>
+                                    | Jenis Bayar : <b><?php echo $detail_pasien->rawat_jns_bayar; ?> / <?php echo $tanggal_byr; ?></b>
+                                    <?php } ?>
+                                    </span>
+                                    </p>
                                 </div>  
                                 <div class="col-xs-6">
                                 <p>                                
@@ -622,8 +699,10 @@ function HitungSubTotalItem(){
                                     <div class="col-md-12">
                                         <button type="submit" class="btn green submit" id="SaveItem"><i class="fa fa-plus-circle"></i> Tambah Tindakan</button>
                                         <a href="<?php echo site_url('rawat/tindakan/addbhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn purple"><i class="fa fa-medkit"></i> TAMBAH BHP</a>
-                                        <button type="button" class="btn blue simpan" data-toggle="modal" data-target="#bayar" title="Pembayaran"><i class="fa fa-floppy-o"></i> Bayar
-                                        </button>                                        
+                                        <button type="button" class="btn blue" data-toggle="modal" data-target="#simpan" title="Simpan Data"><i class="fa fa-floppy-o"></i> Simpan
+                                        </button>
+                                        <button type="button" class="btn grey" data-toggle="modal" data-target="#bayar" title="Pembayaran"><i class="fa fa-floppy-o"></i> Bayar
+                                        </button>
                                         <a href="<?php echo site_url('rawat/tindakan/bhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn red"><i class="fa fa-print"></i> Print Billing</a>
                                         <a href="<?php echo site_url('rawat/tindakan'); ?>" class="btn yellow"><i class="fa fa-times"></i> Kembali</a>                                        
                                     </div>

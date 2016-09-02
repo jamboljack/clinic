@@ -168,6 +168,12 @@ class Tindakan extends CI_Controller {
 
 	public function updatedata() {
 		$this->tindakan_model->update_data();
+		$this->session->set_flashdata('notification','Simpan Billing Sukses.');
+		redirect(site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)));
+	}
+
+	public function pembayaran() {
+		$this->tindakan_model->pembayaran_data();
 		$this->session->set_flashdata('notification','Pembayaran Billing Sukses.');
 		redirect(site_url('rawat/tindakan/id/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)));
 	}
@@ -211,7 +217,7 @@ class Tindakan extends CI_Controller {
 	public function addbhp($rawat_id) {		
 		$rawat_id 				= $this->uri->segment(4);
 		$jenis_tarif 			= $this->uri->segment(5);
-		$data['detail_pasien'] 	= $this->tindakan_model->select_detail_pasien($rawat_id)->row();		
+		$data['detail_pasien'] 	= $this->tindakan_model->select_detail_pasien($rawat_id)->row();
 		$data['listDokter'] 	= $this->tindakan_model->select_dokter()->result();
 
 		$jual_id				= $this->uri->segment(7); // ID Jual
