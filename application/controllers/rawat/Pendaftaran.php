@@ -111,6 +111,7 @@ class Pendaftaran extends CI_Controller {
 
 		// Simpan ke Table Kunjungan
 		$data = array(
+				'pasien_id'				=> $id_pasien,
 				'rawat_id'				=> $id_rawat,
 		   		'kunjungan_tgl_masuk' 	=> date('Y-m-d'),
 		   		'kunjungan_jam_masuk' 	=> date('Y-m-d'),

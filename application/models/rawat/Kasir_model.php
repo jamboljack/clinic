@@ -143,5 +143,24 @@ class Kasir_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+
+	function select_total_tindakan_kredit($pasien_id) {
+		$this->db->select('SUM(rawat_total) as total');
+		$this->db->from('clinic_rawat');
+		$this->db->where('pasien_id', $pasien_id);
+		$this->db->where('rawat_jns_bayar', 'Credit');		
+
+		return $this->db->get();
+	}
+
+	function select_total_resep_kredit($pasien_id) {
+		$this->db->select('SUM(jual_total) as total');
+		$this->db->from('clinic_jual');
+		$this->db->where('pasien_id', $pasien_id);
+		$this->db->where('jual_status', 'JUAL');
+		$this->db->where('jual_pay_type', 'Credit');
+		
+		return $this->db->get();
+	}
 }
 /* Location: ./application/model/rawat/Kasir_model.php */

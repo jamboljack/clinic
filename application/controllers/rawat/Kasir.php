@@ -40,7 +40,8 @@ class Kasir extends CI_Controller {
 
 		$data['DiBayar']			= ($Total_AC+$Total_BC);
 		$data['GrandTotal']			= (($Total_A+$Total_B)+($Total_AC+$Total_BC));
-		$data['Sisa']				= (($Total_A+$Total_B)-($Total_AC+$Total_BC));
+		$GrandTotal 				= (($Total_A+$Total_B)+($Total_AC+$Total_BC));
+		$data['Sisa']				= ($GrandTotal-($Total_AC+$Total_BC));
 
 		$data['detail']				= $this->kasir_model->select_pasien($pasien_id)->row(); // Data Pasien
 		$data['listTindakan']		= $this->kasir_model->select_tindakan($pasien_id)->result(); // Daftar Tindakan Pasien 
@@ -50,79 +51,120 @@ class Kasir extends CI_Controller {
 	}
 
 	public function pembayaran() {
-		$pasien_id 		= $this->uri->segment(4);
-		$jenisbayar 	= $this->input->post('lstJenisBayar');
-		$Kwitansi 		= $this->kasir_model->getKwitansi();
-		// Update Semua Tindakan
-		$listTindakan	= $this->kasir_model->select_tindakan_open($pasien_id)->result(); // Daftar Tindakan Pasien Open 
-		foreach($listTindakan as $t) {
-			$rawat_id = $t->rawat_id;
-			$total    = $t->rawat_total;
+		$sisa 			= $this->input->post('sisa');
 
-			// Update Tindakan dengan No. Kwitansi dan Jenis Bayar
-			if ($jenisbayar == 'Cash') {
-				$data = array(
-						'rawat_no_kwitansi'	=> $Kwitansi,
-						'rawat_debet' 		=> $total,
-						'rawat_jns_bayar' 	=> $jenisbayar,
-						'rawat_tgl_bayar' 	=> date('Y-m-d'),
-						'rawat_st_bayar' 	=> 'Close',
-						'rawat_date_update' => date('Y-m-d'),
-		   				'rawat_time_update' => date('Y-m-d H:i:s'),
-		   				'user_username' 	=> trim($this->session->userdata('username'))
-					);
-			} else {
-				$data = array(
-						'rawat_no_kwitansi'	=> $Kwitansi,
-						'rawat_kredit' 		=> $total,
-						'rawat_jns_bayar' 	=> $jenisbayar,
-						'rawat_tgl_bayar' 	=> date('Y-m-d'),
-						'rawat_st_bayar' 	=> 'Close',
-						'rawat_date_update' => date('Y-m-d'),
-		   				'rawat_time_update' => date('Y-m-d H:i:s'),
-		   				'user_username' 	=> trim($this->session->userdata('username'))
-					);
+		if ($sisa == 0) { 
+			$this->session->set_flashdata('notification','Transaksi ini Sudah Di Tutup.');
+		 	redirect(site_url('rawat/kasir/id/'.$this->uri->segment(4)));
+		} else {
+			$pasien_id 		= $this->uri->segment(4);
+			$jenisbayar 	= $this->input->post('lstJenisBayar');
+			$Kwitansi 		= $this->kasir_model->getKwitansi();
+			// Update Semua Tindakan
+			$listTindakan	= $this->kasir_model->select_tindakan_open($pasien_id)->result(); // Daftar Tindakan Pasien Open 
+			foreach($listTindakan as $t) {
+				$rawat_id = $t->rawat_id;
+				$total    = $t->rawat_total;
+
+				// Update Tindakan dengan No. Kwitansi dan Jenis Bayar
+				if ($jenisbayar == 'Cash') {
+					$data = array(
+							'rawat_no_kwitansi'	=> $Kwitansi,
+							'rawat_debet' 		=> $total,
+							'rawat_jns_bayar' 	=> $jenisbayar,
+							'rawat_tgl_bayar' 	=> date('Y-m-d'),
+							'rawat_st_bayar' 	=> 'Close',
+							'rawat_date_update' => date('Y-m-d'),
+			   				'rawat_time_update' => date('Y-m-d H:i:s'),
+			   				'user_username' 	=> trim($this->session->userdata('username'))
+						);
+				} else {
+					$data = array(
+							'rawat_no_kwitansi'	=> $Kwitansi,
+							'rawat_kredit' 		=> $total,
+							'rawat_jns_bayar' 	=> $jenisbayar,
+							'rawat_tgl_bayar' 	=> date('Y-m-d'),
+							'rawat_st_bayar' 	=> 'Close',
+							'rawat_date_update' => date('Y-m-d'),
+			   				'rawat_time_update' => date('Y-m-d H:i:s'),
+			   				'user_username' 	=> trim($this->session->userdata('username'))
+						);
+				}
+
+				$this->db->where('rawat_id', $rawat_id);
+				$this->db->update('clinic_rawat', $data);
 			}
 
-			$this->db->where('rawat_id', $rawat_id);
-			$this->db->update('clinic_rawat', $data);
-		}
+			// Update Semua Resep
+			$listResep	= $this->kasir_model->select_resep_open($pasien_id)->result(); // Daftar Resep Pasien Open 
+			foreach($listResep as $r) {
+				$jual_id = $r->jual_id;
+				$total    = $r->jual_total;
 
-		// Update Semua Resep
-		$listResep	= $this->kasir_model->select_resep_open($pasien_id)->result(); // Daftar Resep Pasien Open 
-		foreach($listResep as $r) {
-			$jual_id = $r->jual_id;
-			$total    = $r->jual_total;
+				// Update Tindakan dengan No. Kwitansi dan Jenis Bayar
+				if ($jenisbayar == 'Cash') {
+					$data = array(
+							'jual_no_kwitansi'	=> $Kwitansi,
+							'jual_debet' 		=> $total,
+							'jual_pay_type' 	=> $jenisbayar,
+							'jual_date_bayar' 	=> date('Y-m-d'),
+							'jual_st_bayar' 	=> 'Close',
+							'jual_date_update' 	=> date('Y-m-d'),
+			   				'jual_time_update' 	=> date('Y-m-d H:i:s'),
+			   				'user_username' 	=> trim($this->session->userdata('username'))
+						);
+				} else {
+					$data = array(
+							'jual_no_kwitansi'	=> $Kwitansi,
+							'jual_kredit' 		=> $total,
+							'jual_pay_type' 	=> $jenisbayar,
+							'jual_date_bayar' 	=> date('Y-m-d'),
+							'jual_st_bayar' 	=> 'Close',
+							'jual_date_update' 	=> date('Y-m-d'),
+			   				'jual_time_update' 	=> date('Y-m-d H:i:s'),
+			   				'user_username' 	=> trim($this->session->userdata('username'))
+						);
+				}
 
-			// Update Tindakan dengan No. Kwitansi dan Jenis Bayar
-			if ($jenisbayar == 'Cash') {
-				$data = array(
-						'jual_no_kwitansi'	=> $Kwitansi,
-						'jual_debet' 		=> $total,
-						'jual_pay_type' 	=> $jenisbayar,
-						'jual_date_bayar' 	=> date('Y-m-d'),
-						'jual_st_bayar' 	=> 'Close',
-						'jual_date_update' 	=> date('Y-m-d'),
-		   				'jual_time_update' 	=> date('Y-m-d H:i:s'),
-		   				'user_username' 	=> trim($this->session->userdata('username'))
-					);
-			} else {
-				$data = array(
-						'jual_no_kwitansi'	=> $Kwitansi,
-						'jual_kredit' 		=> $total,
-						'jual_pay_type' 	=> $jenisbayar,
-						'jual_date_bayar' 	=> date('Y-m-d'),
-						'jual_st_bayar' 	=> 'Close',
-						'jual_date_update' 	=> date('Y-m-d'),
-		   				'jual_time_update' 	=> date('Y-m-d H:i:s'),
-		   				'user_username' 	=> trim($this->session->userdata('username'))
-					);
+				$this->db->where('jual_id', $jual_id);
+				$this->db->update('clinic_jual', $data);
 			}
 
-			$this->db->where('jual_id', $jual_id);
-			$this->db->update('clinic_jual', $data);
+			// Update Kunjungan
+			$data = array(
+					'kunjungan_tgl_keluar'		=> date('Y-m-d'),
+					'kunjungan_jam_keluar' 		=> date('Y-m-d H:i:s'),
+					'kunjungan_date_update' 	=> date('Y-m-d'),
+			   		'kunjungan_time_update' 	=> date('Y-m-d H:i:s')		   		
+				);
+
+			$this->db->where('pasien_id', $pasien_id);
+			$this->db->where('kunjungan_tgl_masuk', date('Y-m-d'));
+			$this->db->update('clinic_kunjungan', $data);
+
+			// Update Saldo Hutang Pasien
+			$totaltindakankredit	= $this->kasir_model->select_total_tindakan_kredit($pasien_id)->row(); // Total 
+			$Total_K1				= $totaltindakankredit->total;
+			$totalresepkredit		= $this->kasir_model->select_total_resep_kredit($pasien_id)->row(); // Total 
+			$Total_K2				= $totalresepkredit->total;
+			$TotalHutang 			= ($Total_K1 + $Total_K2);
+
+			// Update Kunjungan
+			$data = array(
+					'pasien_saldo_hutang'		=> $TotalHutang
+				);
+
+			$this->db->where('pasien_id', $pasien_id);		
+			$this->db->update('clinic_pasien', $data);
+
+			$this->session->set_flashdata('notification','Pembayaran Sukses.');
+		 	redirect(site_url('rawat/kasir/id/'.$this->uri->segment(4)));
 		}
 	}
 
+	public function printbilling() {
+		$pasien_id 					= $this->uri->segment(4);
+		$data['detail']				= $this->kasir_model->select_pasien($pasien_id)->row(); // Data Pasien
+	}
 }
 /* Location: ./application/controller/rawat/Kasir.php */

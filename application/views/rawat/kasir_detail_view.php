@@ -2,6 +2,19 @@
 <script src="<?php echo base_url(); ?>js/sweetalert2.min.js"></script>
 <script src="<?php echo base_url(); ?>js/jquery.maskMoney.min.js"></script>
 
+<?php 
+if ($this->session->flashdata('notification')) { ?>
+<script>
+    swal({
+        title: "Done",
+        text: "<?php echo $this->session->flashdata('notification'); ?>",
+        timer: 2000,
+        showConfirmButton: false,
+        type: 'success'
+    });
+</script>
+<? } ?>
+
 <script language="JavaScript" type="text/JavaScript">
 $(document).ready(function(){
     $('#kembalian').maskMoney({thousands:',', precision:0});    
@@ -15,7 +28,7 @@ function HitungKembalian(){
     var Bayar       = parseInt(myForm.jml_bayar.value);
     var Kembalian   = (Bayar - Sisa);
 
-    if (Kembalian > 0) {
+    if (Kembalian >= 0) {
         myForm.kembalian.value = Kembalian; 
     } else {
         myForm.kembalian.value = 0;
@@ -118,7 +131,7 @@ function HitungKembalian(){
                     <div class="portlet-body form">
                         <form role="form" action="<?php echo site_url('rawat/kasir/pembayaran/'.$this->uri->segment(4)); ?>" method="post" enctype="multipart/form-data" name="form1">
                         <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-                        <input type="hidden" id="sisa" value="<?php echo $Sisa; ?>">
+                        <input type="hidden" name="sisa" id="sisa" value="<?php echo $Sisa; ?>">
                         
                             <div class="form-body">                                
                                 <div class="row">
@@ -182,7 +195,7 @@ function HitungKembalian(){
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit" class="btn green submit"><i class="fa fa-floppy-o"></i> Bayar Kwitansi</button>
-                                        <a href="<?php echo site_url('rawat/tindakan/bhp/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/'.$this->uri->segment(6)); ?>" class="btn red"><i class="fa fa-print"></i> Print Kwitansi</a>
+                                        <a href="<?php echo site_url('rawat/kasir/printbilling/'.$this->uri->segment(4).'/'.$Kwitansi.'/'.$GrandTotal); ?>" class="btn red" target="_blank"><i class="fa fa-print"></i> Print Kwitansi</a>
                                         <a href="<?php echo site_url('rawat/kasir'); ?>" class="btn yellow"><i class="fa fa-times"></i> Kembali</a>                                        
                                     </div>
                                 </div>                            
@@ -258,8 +271,8 @@ function HitungKembalian(){
                                         <tfoot>
                                             <tr>
                                                 <td colspan="5" align="center"><b>SUB TOTAL</b></td>
-                                                <td align="right"><b><?php echo number_format($TotalA, 0, '.', ','); ?></b></td>
-                                                <td align="right"><b><?php echo number_format($TotalAC, 0, '.', ','); ?></b></td>
+                                                <td align="right"><b><?php echo number_format($TotalA, 0, '.', ','); ?> (D)</b></td>
+                                                <td align="right"><b><?php echo number_format($TotalAC, 0, '.', ','); ?> (K)</b></td>
                                                 <td></td>
                                             </tr>
                                         </tfoot>
@@ -335,8 +348,8 @@ function HitungKembalian(){
                                         <tfoot>
                                             <tr>
                                                 <td colspan="4" align="center"><b>SUB TOTAL</b></td>
-                                                <td align="right"><b><?php echo number_format($TotalB, 0, '.', ','); ?></b></td>
-                                                <td align="right"><b><?php echo number_format($TotalBC, 0, '.', ','); ?></b></td>
+                                                <td align="right"><b><?php echo number_format($TotalB, 0, '.', ','); ?> (D)</b></td>
+                                                <td align="right"><b><?php echo number_format($TotalBC, 0, '.', ','); ?> (K)</b></td>
                                                 <td></td>
                                             </tr>
                                         </tfoot>
